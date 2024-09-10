@@ -1,0 +1,28 @@
+#  GET http://localhost:8000/api/users
+
+POST http://localhost:8000/api/login
+Content-Type: application/json
+ Accept: application/json
+{
+   "name": "Dramane",
+   "email": "sanou@coris-assurances.com",
+   "role": "CHEFAGENCE",
+   "password": "dsanou123",
+  "etat": "ACTIVER"
+}
+
+#PUT http://localhost:8000/api/users/5
+#Content-Type: application/json
+#Accept: application/json
+
+#{
+#   "name": "Jocelein",
+#    "email": "SVSVSD@DGD.COM",
+#    "role": "CHEFAGENCE",
+#    "password": "compaore",
+#    "etat": "ACTIVER"
+#  }
+
+# DELETE http://localhost:8000/api/typeprestations/11
+
+
