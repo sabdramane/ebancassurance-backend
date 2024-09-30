@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nature')->nullable();
             $table->unsignedBigInteger('produit_id')->nullable();
-            $table->foreign('cc')->references('id')
+            $table->foreign('produit_id')->references('id')
                                          ->on('produits')
                                          ->onDelete('cascade')
                                          ->onUpdate('cascade');
