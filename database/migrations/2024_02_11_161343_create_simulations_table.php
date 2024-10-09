@@ -13,17 +13,27 @@ return new class extends Migration
     {
         Schema::create('simulations', function (Blueprint $table) {
             $table->id();
-            $table->date("dateeffet");
-            $table->date("dateeche");
             $table->date("datenaissance");
-            $table->integer("duree");
-            $table->integer("fraisacces");
+            $table->integer("duree_amort");
+            $table->integer("duree_pret");
             $table->string("periodicite");
             $table->integer("differe");
-            $table->integer("traite");
+            $table->integer("montantpret");
+            $table->integer("capitalprevoyance");
+            $table->integer("montant_traite");
+            $table->boolean("beogo");
+            $table->double("prime_nette_flex");
+            $table->double("prime_nette_prevoyance");
+            $table->double("prime_perte_emploi");
+            $table->double("prime_beogo");
             $table->double("primetotale");
+            $table->unsignedBigInteger('banque_id')->nullable();
             $table->unsignedBigInteger('agence_id')->nullable();
             $table->unsignedBigInteger('produit_id')->nullable();
+            $table->foreign('banque_id')->references('id')
+                                            ->on('banques')
+                                            ->onDelete('cascade')
+                                            ->onUpdate('cascade');
             $table->foreign('agence_id')->references('id')
                                             ->on('agences')
                                             ->onDelete('cascade')
