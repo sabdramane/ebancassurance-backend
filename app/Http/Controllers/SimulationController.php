@@ -30,9 +30,11 @@ class SimulationController extends Controller
      */
     public function store(Request $request)
     {
-
         //Déterminons l'age du client
-        $datenaissance = new DateTime($request->datenaissance); 
+        $datenaissance = explode("/",$request->datenaissance);
+        $datenaissance = new DateTime($datenaissance[2]."/".$datenaissance[1]."/".$datenaissance[0]);
+
+        
         $datejour = new DateTime();
         $annenaissance = $datenaissance->format('Y');
         $annejour =  $datejour->format('Y');
@@ -135,9 +137,7 @@ class SimulationController extends Controller
 
         $prime_totale = $prime_nette_flex+$prime_nette_prevoyance+$prime_nette_perte_emploi+$prime_nette_beogo+$cout_police;
 
-        $datenaissance = explode("/",$request->datenaissance);
-        $datenaissance = new DateTime($datenaissance[2]."/".$datenaissance[1]."/".$datenaissance[0]);
-
+        
         $simulation = new Simulation();
         $simulation->datenaissance = $datenaissance;
         $simulation->duree_amort = $duree_contrat;
