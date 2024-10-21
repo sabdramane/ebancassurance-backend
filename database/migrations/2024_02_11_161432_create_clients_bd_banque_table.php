@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('bdbanque_clients', function (Blueprint $table) {
             $table->id();
             $table->string("codeagence")->nullable();
             $table->string("numcompte")->nullable();

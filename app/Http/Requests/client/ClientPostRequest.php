@@ -26,15 +26,13 @@ class ClientPostRequest extends FormRequest
             'prenom'=>'required',
             'telephone'=>'required',
             'dateNaissance'=>'required',
-            'genre'=>'required',
+            'civilite'=>'required',
             'profession'=>'required',
             'lieuNaissance'=>'required',
-            'email'=>'required',
-            'boitepostale'=>'required',
             'numcompte'=>'required',
             'clerib'=>'required',
             'codeagence'=>'required',
-            'agence_id'=>'required',
+            'codeagence'=>'required',
         ];
     }
 }

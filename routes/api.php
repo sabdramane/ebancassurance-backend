@@ -103,3 +103,5 @@ Route::get('/produits/{libelleparams}/{params_id}', [ProduitController::class, '
 Route::post('/produits-banque', [ProduitController::class, 'insertProduitToBanque']);
 Route::get('/banques/{libelleparams}/{params_id}', [BanqueController::class, 'findAllByParams']);
 Route::post('/tarifs/produits-banque-tarif', [TarifController::class, 'insertTarifGarantieBanque']);
+
+Route::post('/clients/get-infos', [ClientController::class, 'getInfosClient']);
