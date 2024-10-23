@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contrats', function (Blueprint $table) {
+        Schema::create('pre_contrats', function (Blueprint $table) {
             $table->id();
             $table->string("numprojet")->nullable();
             $table->string("dateeffet")->nullable();
@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer("duree_amort")->nullable();
             $table->integer("duree_pret")->nullable();
             $table->string("periodicite")->nullable();
+            $table->string("type_pret")->nullable();
             $table->integer("differe")->nullable();
             $table->string("montant_traite")->nullable();
             $table->string("montantpret")->nullable();

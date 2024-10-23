@@ -22,21 +22,6 @@ class ContratPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'numprojet'=>'required',
-            'dateeffet'=>'required',
-            'dateeche'=>'required',
-            'datesaisie'=>'required',
-            'duree'=>'required',
-            'periodicite'=>'required',
-            'differe'=>'required',
-            'traite'=>'required',
-            'etat'=>'required',
-            'fraisacces'=>'required',
-            'primetotale'=>'required',
-            'produit_id'=>'required',
-            'agence_id'=>'required',
-            'client_id'=>'required',
-            'rapprochement_id'=>'required',
         ];
     }
 }

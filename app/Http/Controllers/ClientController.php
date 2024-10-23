@@ -20,11 +20,20 @@ class ClientController extends Controller
 
     public function getInfosClient(Request $request)
     {
-        $bdbanque_clients = BdbanqueClient::where('codeagence',$request->codeagence)
+        $client = Client::where('codeagence',$request->codeagence)
+                                    ->where('numcompte',$request->numcompte)
+                                    ->where('clerib',$request->clerib)
+                                    ->first();
+        if($client != null){
+            return $client;
+        }else{
+            $bdbanque_clients = BdbanqueClient::where('codeagence',$request->codeagence)
                                             ->where('numcompte',$request->numcompte)
                                             ->where('clerib',$request->clerib)
                                             ->first();
-        return $bdbanque_clients;
+            return $bdbanque_clients;
+        }
+        
     }
     /**
      * Show the form for creating a new resource.

@@ -7,6 +7,7 @@ use App\Http\Controllers\CaracrteristiquesController;
 use App\Http\Controllers\CategorieProduitController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContratController;
+use App\Http\Controllers\PreContratController;
 use App\Http\Controllers\ContratQuestionnaireController;
 use App\Http\Controllers\DocumentPrestationController;
 use App\Http\Controllers\ExamenController;
@@ -105,3 +106,4 @@ Route::get('/banques/{libelleparams}/{params_id}', [BanqueController::class, 'fi
 Route::post('/tarifs/produits-banque-tarif', [TarifController::class, 'insertTarifGarantieBanque']);
 
 Route::post('/clients/get-infos', [ClientController::class, 'getInfosClient']);
+Route::post('/precontrats/store', [PreContratController::class, 'store']);

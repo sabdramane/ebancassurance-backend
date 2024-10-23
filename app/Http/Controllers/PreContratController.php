@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\contrat\ContratPostRequest;
 use DB;
 use DateTime;
-use App\Models\Simulation;
+use App\Models\PreContrat;
+use App\Models\Client;
 
-class SimulationController extends Controller
+
+class PreContratController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,9 +31,8 @@ class SimulationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ContratPostRequest $request)
     {
-        //Déterminons l'age du client
         $datenaissance = explode("/",$request->datenaissance);
         $datenaissance = new DateTime($datenaissance[2]."/".$datenaissance[1]."/".$datenaissance[0]);
 
@@ -143,31 +145,38 @@ class SimulationController extends Controller
         $cout_police = 1000;
 
         $prime_totale = $prime_nette_flex+$prime_nette_prevoyance+$prime_nette_perte_emploi+$prime_nette_beogo+$cout_police;
+        $client = Client::find($request->client_id);
+        if ($client == null) {
+            return response()->json([
+                'message' => "Le client n'existe pas"
+            ]);
+        }
+        $precontrat = new PreContrat();
+        $precontrat->type_pret = $request->type_pret;
+        $precontrat->dateeche = $request->dateeche;
+        $precontrat->dateeffet = $request->dateeffet;
+        $precontrat->datesaisie = $request->datesaisie;
+        $precontrat->periodicite = $request->periodicite;
+        $precontrat->differe = $request->duree_differe;
+        $precontrat->duree_amort = $duree_contrat;
+        $precontrat->duree_pret = $request->duree;
+        $precontrat->montantpret = $request->montantpret;
+        $precontrat->capitalprevoyance = $request->capitalprevoyance;
+        $precontrat->montant_traite = $request->montant_traite;
+        $precontrat->beogo = $request->beogo;
+        $precontrat->prime_nette_flex = round($prime_nette_flex,0);
+        $precontrat->prime_nette_prevoyance = $prime_nette_prevoyance;
+        $precontrat->prime_perte_emploi = $prime_nette_perte_emploi;
+        $precontrat->prime_beogo = $prime_nette_beogo;
+        $precontrat->primetotale = round($prime_totale,0);
+        $precontrat->cout_police = $cout_police;
+        $precontrat->banque_id = $request->banque_id;
+        //$precontrat->agence_id = $request->agence_id;
+        $precontrat->produit_id = $request->produit_id;
+        $precontrat->client_id = $client->id;
+        $precontrat->save();
 
-        
-        $simulation = new Simulation();
-        $simulation->datenaissance = $datenaissance;
-        $simulation->duree_amort = $duree_contrat;
-        $simulation->duree_pret = $request->duree;
-        $simulation->periodicite = $request->periodicite;
-        $simulation->differe = $request->duree_differe;
-        $simulation->montantpret = $request->montantpret;
-        $simulation->capitalprevoyance = $request->capitalprevoyance;
-        $simulation->montant_traite = $request->montant_traite;
-        $simulation->beogo = $request->beogo;
-        $simulation->prime_nette_flex = $prime_nette_flex;
-        $simulation->prime_nette_prevoyance = $prime_nette_prevoyance;
-        $simulation->prime_perte_emploi = $prime_nette_perte_emploi;
-        $simulation->prime_beogo = $prime_nette_beogo;
-        $simulation->primetotale = $prime_totale;
-        $simulation->cout_police = $cout_police;
-        $simulation->banque_id = $request->banque_id;
-        //$simulation->agence_id = $request->agence_id;
-        $simulation->produit_id = $request->produit_id;
-        $simulation->save();
-      
-        return  $simulation;
-
+        return $precontrat;
     }
 
     /**
