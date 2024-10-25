@@ -13,22 +13,11 @@ return new class extends Migration
     {
         Schema::create('beneficiaires', function (Blueprint $table) {
             $table->id();
-            $table->string("nom")->nullable();
-            $table->string("prenom")->nullable();
+            $table->string("beneficiaire_nom")->nullable();
             $table->string("telephone")->nullable();
             $table->string("adresse")->nullable();
             $table->string("ville")->nullable();
             $table->string("typebeneficiaire")->nullable();
-            $table->unsignedBigInteger('client_id')->nullable();
-            $table->unsignedBigInteger('contrat_id')->nullable();
-            $table->foreign('client_id')->references('id')
-                                            ->on('clients')
-                                            ->onDelete('cascade')
-                                            ->onUpdate('cascade');
-            $table->foreign('contrat_id')->references('id')
-                                            ->on('contrats')
-                                            ->onDelete('cascade')
-                                            ->onUpdate('cascade');
             $table->timestamps();
         });
     }

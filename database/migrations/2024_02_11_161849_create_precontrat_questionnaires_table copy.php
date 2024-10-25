@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contrat_questionnaires', function (Blueprint $table) {
+        Schema::create('pre_contrat_questionnaires', function (Blueprint $table) {
             $table->id();
             $table->string("valeur")->nullable();
             $table->string("motif")->nullable();
             $table->date("datesurvenance")->nullable();
-            $table->unsignedBigInteger('contrat_id')->nullable();
+            $table->unsignedBigInteger('precontrat_id')->nullable();
             $table->unsignedBigInteger('questionnaire_medical_id')->nullable();
-            $table->foreign('contrat_id')->references('id')
-                                            ->on('contrats')
+            $table->foreign('precontrat_id')->references('id')
+                                            ->on('pre_contrats')
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');
             $table->foreign('questionnaire_medical_id')->references('id')

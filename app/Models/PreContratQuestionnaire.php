@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ContratQuestionnaire extends Model
+class PreContratQuestionnaire extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id','valeur','motif','datesurvenance','contrat_id','questionnaire_medical_id'
+        'id','valeur','motif','datesurvenance','precontrat_id','questionnaire_medical_id'
     ];
 }

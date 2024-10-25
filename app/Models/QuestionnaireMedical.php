@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class QuestionnaireMedical extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'id','codequestion','libelle','produit_id'
+    ];
 }

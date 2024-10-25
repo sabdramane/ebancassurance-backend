@@ -7,6 +7,7 @@ use App\Http\Requests\contrat\ContratPostRequest;
 use DB;
 use DateTime;
 use App\Models\PreContrat;
+use App\Models\Beneficiaire;
 use App\Models\Client;
 
 
@@ -151,6 +152,8 @@ class PreContratController extends Controller
                 'message' => "Le client n'existe pas"
             ]);
         }
+
+      
         $precontrat = new PreContrat();
         $precontrat->type_pret = $request->type_pret;
         $precontrat->dateeche = $request->dateeche;
@@ -173,7 +176,26 @@ class PreContratController extends Controller
         $precontrat->banque_id = $request->banque_id;
         //$precontrat->agence_id = $request->agence_id;
         $precontrat->produit_id = $request->produit_id;
+        $precontrat->contrat_travail = $request->produit_id;
         $precontrat->client_id = $client->id;
+
+        if ($request->beneficiaire != "") {
+            $beneficiaire = new Beneficiaire();
+            $beneficiaire->beneficiaire_nom = $request->beneficiaire;
+            $beneficiaire->telephone = $request->contact_beneficiaire;
+            $beneficiaire->save() ;
+
+            $precontrat->beneficiaire_id = $beneficiaire->id;
+        }
+
+        if ($files = $request->file('contrat_travail')) {
+            $extension_fichier = $request->contrat_travail->getClientOriginalExtension();
+            $nom_fichier = $request->contrat_travail->hashName();
+            $fichier = $request->contrat_travail->move("storage/imports/contrat_travail/", $nom_fichier);
+            $precontrat->contrat_travail = $nom_fichier;
+            $precontrat->contrat_travail_ext = $extension_fichier;
+            $precontrat->employeur = $request->employeur;
+        }
         $precontrat->save();
 
         return $precontrat;

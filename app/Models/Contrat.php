@@ -10,7 +10,8 @@ class Contrat extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','numprojet','dateeffet','dateeche','datesaisie','duree','periodicite','differe','traite',
+            'id','numprojet','dateeffet','dateeche','datesaisie','duree','periodicite','differe','traite',
             'etat','fraisacces','primetotale','produit_id','agence_id','client_id','rapprochement_id'
+            ,'contrat_travail','contrat_travail_ext','employeur','beneficiaire_id'
     ];
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContratController;
 use App\Http\Controllers\PreContratController;
 use App\Http\Controllers\ContratQuestionnaireController;
+use App\Http\Controllers\PreContratQuestionnaireController;
 use App\Http\Controllers\DocumentPrestationController;
 use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\GarantieController;
@@ -107,3 +108,4 @@ Route::post('/tarifs/produits-banque-tarif', [TarifController::class, 'insertTar
 
 Route::post('/clients/get-infos', [ClientController::class, 'getInfosClient']);
 Route::post('/precontrats/store', [PreContratController::class, 'store']);
+Route::post('/precontrats-questionnaire/store', [PreContratQuestionnaireController::class, 'store']);

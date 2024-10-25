@@ -57,6 +57,12 @@ class ClientController extends Controller
         }else{
              $client->update($request->all());    
         }
+        if ($files = $request->file('fichier_cnib')) {
+            $nom_fichier = $request->fichier_cnib->hashName();
+            $fichier = $request->fichier_cnib->move("storage/imports/fichier_cnib/", $nom_fichier);
+            $client->fichier_cnib = $nom_fichier;
+            $client->save();
+        }
         
         return $client;
     }

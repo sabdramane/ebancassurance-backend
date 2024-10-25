@@ -32,11 +32,14 @@ return new class extends Migration
             $table->double("cout_police")->nullable();
             $table->double("primetotale")->nullable();
             $table->string("etat")->nullable();
+            $table->string("contrat_travail")->nullable();
+            $table->string("contrat_travail_ext")->nullable();
             $table->unsignedBigInteger('produit_id')->nullable();
             $table->unsignedBigInteger('agence_id')->nullable();
             $table->unsignedBigInteger('banque_id')->nullable();
             $table->unsignedBigInteger('client_id')->nullable();
             $table->unsignedBigInteger('rapprochement_id')->nullable();
+            $table->unsignedBigInteger('beneficiaire_id')->nullable();
             $table->foreign('produit_id')->references('id')
                                             ->on('produits')
                                             ->onDelete('cascade')
@@ -55,6 +58,10 @@ return new class extends Migration
                                             ->onUpdate('cascade');
             $table->foreign('rapprochement_id')->references('id')
                                             ->on('rapprochements')
+                                            ->onDelete('cascade')
+                                            ->onUpdate('cascade');
+            $table->foreign('beneficiaire_id')->references('id')
+                                            ->on('beneficiaires')
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');
             $table->timestamps();
