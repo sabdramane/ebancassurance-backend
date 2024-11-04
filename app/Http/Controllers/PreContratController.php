@@ -34,10 +34,9 @@ class PreContratController extends Controller
      */
     public function store(ContratPostRequest $request)
     {
-        $datenaissance = explode("/",$request->datenaissance);
-        $datenaissance = new DateTime($datenaissance[2]."/".$datenaissance[1]."/".$datenaissance[0]);
-
-        
+       $datenaissance = explode("/",$request->datenaissance);
+       $datenaissance = new DateTime($datenaissance[2]."/".$datenaissance[1]."/".$datenaissance[0]);
+    
         $datejour = new DateTime();
         $annenaissance = $datenaissance->format('Y');
         $annejour =  $datejour->format('Y');
@@ -153,50 +152,53 @@ class PreContratController extends Controller
             ]);
         }
 
-      
-        $precontrat = new PreContrat();
-        $precontrat->type_pret = $request->type_pret;
-        $precontrat->dateeche = $request->dateeche;
-        $precontrat->dateeffet = $request->dateeffet;
-        $precontrat->datesaisie = $request->datesaisie;
-        $precontrat->periodicite = $request->periodicite;
-        $precontrat->differe = $request->duree_differe;
-        $precontrat->duree_amort = $duree_contrat;
-        $precontrat->duree_pret = $request->duree;
-        $precontrat->montantpret = $request->montantpret;
-        $precontrat->capitalprevoyance = $request->capitalprevoyance;
-        $precontrat->montant_traite = $request->montant_traite;
-        $precontrat->beogo = $request->beogo;
-        $precontrat->prime_nette_flex = round($prime_nette_flex,0);
-        $precontrat->prime_nette_prevoyance = $prime_nette_prevoyance;
-        $precontrat->prime_perte_emploi = $prime_nette_perte_emploi;
-        $precontrat->prime_beogo = $prime_nette_beogo;
-        $precontrat->primetotale = round($prime_totale,0);
-        $precontrat->cout_police = $cout_police;
-        $precontrat->banque_id = $request->banque_id;
-        //$precontrat->agence_id = $request->agence_id;
-        $precontrat->produit_id = $request->produit_id;
-        $precontrat->contrat_travail = $request->produit_id;
-        $precontrat->client_id = $client->id;
+        $precontrat = PreContrat::find($request->precontrat_id);
 
-        if ($request->beneficiaire != "") {
-            $beneficiaire = new Beneficiaire();
-            $beneficiaire->beneficiaire_nom = $request->beneficiaire;
-            $beneficiaire->telephone = $request->contact_beneficiaire;
-            $beneficiaire->save() ;
-
-            $precontrat->beneficiaire_id = $beneficiaire->id;
+        if ($precontrat != null) {
+            //$precontrat = new PreContrat();
+            $precontrat->type_pret = $request->type_pret;
+            $precontrat->dateeche = $request->dateeche;
+            $precontrat->dateeffet = $request->dateeffet;
+            $precontrat->datesaisie = $request->datesaisie;
+            $precontrat->periodicite = $request->periodicite;
+            $precontrat->differe = $request->duree_differe;
+            $precontrat->duree_amort = $duree_contrat;
+            $precontrat->duree_pret = $request->duree;
+            $precontrat->montantpret = $request->montantpret;
+            $precontrat->capitalprevoyance = $request->capitalprevoyance;
+            $precontrat->montant_traite = $request->montant_traite;
+            $precontrat->beogo = $request->beogo;
+            $precontrat->prime_nette_flex = round($prime_nette_flex,0);
+            $precontrat->prime_nette_prevoyance = $prime_nette_prevoyance;
+            $precontrat->prime_perte_emploi = $prime_nette_perte_emploi;
+            $precontrat->prime_beogo = $prime_nette_beogo;
+            $precontrat->primetotale = round($prime_totale,0);
+            $precontrat->cout_police = $cout_police;
+            $precontrat->banque_id = $request->banque_id;
+            //$precontrat->agence_id = $request->agence_id;
+            $precontrat->produit_id = $request->produit_id;
+            $precontrat->contrat_travail = $request->produit_id;
+            $precontrat->client_id = $client->id;
+    
+            if ($request->beneficiaire != "") {
+                $beneficiaire = new Beneficiaire();
+                $beneficiaire->beneficiaire_nom = $request->beneficiaire;
+                $beneficiaire->telephone = $request->contact_beneficiaire;
+                $beneficiaire->save() ;
+    
+                $precontrat->beneficiaire_id = $beneficiaire->id;
+            }
+    
+            if ($files = $request->file('contrat_travail')) {
+                $extension_fichier = $request->contrat_travail->getClientOriginalExtension();
+                $nom_fichier = $request->contrat_travail->hashName();
+                $fichier = $request->contrat_travail->move("storage/imports/contrat_travail/", $nom_fichier);
+                $precontrat->contrat_travail = $nom_fichier;
+                $precontrat->contrat_travail_ext = $extension_fichier;
+                $precontrat->employeur = $request->employeur;
+            }
+            $precontrat->save();
         }
-
-        if ($files = $request->file('contrat_travail')) {
-            $extension_fichier = $request->contrat_travail->getClientOriginalExtension();
-            $nom_fichier = $request->contrat_travail->hashName();
-            $fichier = $request->contrat_travail->move("storage/imports/contrat_travail/", $nom_fichier);
-            $precontrat->contrat_travail = $nom_fichier;
-            $precontrat->contrat_travail_ext = $extension_fichier;
-            $precontrat->employeur = $request->employeur;
-        }
-        $precontrat->save();
 
         return $precontrat;
     }

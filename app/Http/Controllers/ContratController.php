@@ -91,6 +91,7 @@ class ContratController extends Controller
         $contrat->contrat_travail =$precontrat->contrat_travail;
         $contrat->contrat_travail_ext = $precontrat->contrat_travail_ext;
         $contrat->employeur = $precontrat->employeur;
+        $contrat->precontrat_id = $precontrat->id;
         $contrat->save();
 
         $precontrat_questionnaires = PreContratQuestionnaire::where('precontrat_id',$precontrat->id)
