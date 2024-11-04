@@ -9,6 +9,8 @@ use App\Models\QuestionnaireMedical;
 use App\Models\PreContratQuestionnaire;
 use App\Models\ContratQuestionnaire;
 use App\Models\Produit;
+use DB;
+
 
 class ContratController extends Controller
 {
@@ -17,7 +19,13 @@ class ContratController extends Controller
      */
     public function index()
     {
-        //
+        $contrats = DB::table('contrats')
+                        ->select('contrats.id','contrats.numprojet','contrats.dateeffet','contrats.dateeche','contrats.montantpret','contrats.primetotale','contrats.montantpret',
+                                'contrats.duree_pret','contrats.differe',
+                                'clients.nom','clients.prenom','clients.numcompte','clients.codeagence','clients.clerib')
+                        ->join('clients', 'clients.id', '=', 'contrats.client_id')
+                        ->get();
+        return $contrats;
     }
 
     /**
