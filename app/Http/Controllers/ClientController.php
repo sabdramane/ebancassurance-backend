@@ -38,9 +38,15 @@ class ClientController extends Controller
                                             ->where('numcompte',$request->numcompte)
                                             ->where('clerib',$request->clerib)
                                             ->first();
-            $bdbanque_clients->precontrat_id = $precontrat->id;
-            return $bdbanque_clients;
+            if ($bdbanque_clients != null) {
+                $bdbanque_clients->precontrat_id = $precontrat->id;
+                return $bdbanque_clients;
+            }
         }
+
+        $client = new Client();
+        $client->precontrat_id = $precontrat->id;
+        return $client;
         
     }
     /**
