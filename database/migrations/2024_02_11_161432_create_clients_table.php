@@ -27,8 +27,8 @@ return new class extends Migration
             $table->string("boitepostale")->nullable();
             $table->string("adresse")->nullable();
             $table->string("ville")->nullable();
-            $table->string("numcnib")->nullable();
-            $table->string("fichier_cnib")->nullable();
+            $table->string("num_piece_identite")->nullable();
+            $table->string("document_piece_identite")->nullable();
             $table->timestamps();
         });
     }

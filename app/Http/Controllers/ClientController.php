@@ -72,10 +72,10 @@ class ClientController extends Controller
              $client->update($request->all());    
         }
 
-        if ($files = $request->file('fichier_cnib')) {
-            $nom_fichier = $request->fichier_cnib->hashName();
-            $fichier = $request->fichier_cnib->move("storage/imports/fichier_cnib/", $nom_fichier);
-            $client->fichier_cnib = $nom_fichier;
+        if ($files = $request->file('document_piece_identite')) {
+            $nom_fichier = $request->document_piece_identite->hashName();
+            $fichier = $request->document_piece_identite->move("storage/imports/document_piece_identite/", $nom_fichier);
+            $client->document_piece_identite = $nom_fichier;
             $client->save();
         }
         $client->precontrat_id = $request->precontrat_id;
