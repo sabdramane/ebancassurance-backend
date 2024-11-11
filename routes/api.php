@@ -109,3 +109,4 @@ Route::post('/tarifs/produits-banque-tarif', [TarifController::class, 'insertTar
 Route::post('/clients/get-infos', [ClientController::class, 'getInfosClient']);
 Route::post('/precontrats/store', [PreContratController::class, 'store']);
 Route::post('/precontrats-questionnaire/store', [PreContratQuestionnaireController::class, 'store']);
+Route::get('/generer-contrat/{id}', [ContratController::class, 'printContrat']);

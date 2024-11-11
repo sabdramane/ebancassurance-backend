@@ -10,6 +10,7 @@ use App\Models\PreContratQuestionnaire;
 use App\Models\ContratQuestionnaire;
 use App\Models\Produit;
 use DB;
+use PDF;
 
 
 class ContratController extends Controller
@@ -116,6 +117,33 @@ class ContratController extends Controller
         return $contrat;
     }
 
+    public function printContrat($id)
+    {
+        $contrat = Contrat::find($id);
+        $contrat_quest_tailles = DB::table('contrat_questionnaires')
+                        ->select('contrat_questionnaires.id','contrat_questionnaires.valeur','contrat_questionnaires.motif')
+                        ->join('questionnaire_medicals', 'questionnaire_medicals.id', '=', 'contrat_questionnaires.questionnaire_medical_id')
+                        ->where('contrat_questionnaires.contrat_id',$id)
+                        ->where('questionnaire_medicals.codequestion',"taille")
+                        ->first();
+        $contrat_quest_poids = DB::table('contrat_questionnaires')
+                        ->select('contrat_questionnaires.id','contrat_questionnaires.valeur','contrat_questionnaires.motif')
+                        ->join('questionnaire_medicals', 'questionnaire_medicals.id', '=', 'contrat_questionnaires.questionnaire_medical_id')
+                        ->where('contrat_questionnaires.contrat_id',$id)
+                        ->where('questionnaire_medicals.codequestion',"poids")
+                        ->first();
+        $contrat_quests = DB::table('contrat_questionnaires')
+                        ->select('contrat_questionnaires.id','contrat_questionnaires.valeur','contrat_questionnaires.motif','questionnaire_medicals.libelle')
+                        ->join('questionnaire_medicals', 'questionnaire_medicals.id', '=', 'contrat_questionnaires.questionnaire_medical_id')
+                        ->where('contrat_questionnaires.contrat_id',$id)
+                        ->where('questionnaire_medicals.codequestion','!=',"poids")
+                        ->where('questionnaire_medicals.codequestion','!=',"taille")
+                        ->get();
+        $contrat_questionnaire_taille = ContratQuestionnaire::where('');
+        $pdf=PDF::loadView('contrats.contrat_pdf',compact('contrat','contrat_quest_tailles','contrat_quest_poids','contrat_quests'))->setPaper('a4');
+        return $pdf->stream();
+    }
+
     /**
      * Display the specified resource.
      */
@@ -147,4 +175,5 @@ class ContratController extends Controller
     {
         //
     }
+
 }

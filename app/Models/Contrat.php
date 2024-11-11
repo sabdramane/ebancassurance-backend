@@ -14,4 +14,18 @@ class Contrat extends Model
             'etat','fraisacces','primetotale','produit_id','agence_id','client_id','rapprochement_id'
             ,'contrat_travail','contrat_travail_ext','employeur','beneficiaire_id'
     ];
+
+    public function banque(){
+        return $this->belongsto(Banque::class);
+    }
+
+    public function agence(){
+        return $this->belongsto(Agence::class);
+    }
+
+    public function client(){
+        return $this->belongsto(Client::class);
+    }
+
+
 }
