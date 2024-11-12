@@ -69,7 +69,7 @@
                     Lieu :
                 </td>
                 <td style="width: 100px">
-                    Bobo dioulasso
+                    {{ $contrat->client->lieuNaissance}}
                 </td>
             </tr>
             <tr>
