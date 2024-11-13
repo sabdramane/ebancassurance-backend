@@ -172,7 +172,7 @@ class ContratController extends Controller
         $contrat->taille = $contrat_quest_tailles->valeur;
         $contrat->poids = $contrat_quest_poids->valeur;
         return response()->json([
-            'contrat'=>$contrat->load(['client']),
+            'contrat'=>$contrat->load(['client','banque','agence']),
             'questionnaires'=>$contrat_quests
         ]);
     }
