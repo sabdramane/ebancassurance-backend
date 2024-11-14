@@ -27,6 +27,7 @@ use App\Http\Controllers\VilleController;
 use App\Http\Resources\TrancheCapitalResource;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 use App\Models\Agence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -99,6 +100,8 @@ Route::apiResource('typecontrats', TypeContratController::class);
 Route::apiResource('typeprestations', TypePrestationController::class);
 
 Route::apiResource('villes', VilleController::class);
+
+Route::apiResource('roles', RoleController::class);
 
 Route::get('/agences/{libelleparams}/{params_id}', [AgenceController::class, 'findAllByParams']);
 Route::get('/produits/{libelleparams}/{params_id}', [ProduitController::class, 'findAllByParams']);

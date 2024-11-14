@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pre_contrats', function (Blueprint $table) {
+        Schema::create('precontrats', function (Blueprint $table) {
             $table->id();
             $table->string("numprojet")->nullable();
             $table->string("dateeffet")->nullable();
@@ -74,6 +74,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contrats');
+        Schema::dropIfExists('precontrats');
     }
 };
