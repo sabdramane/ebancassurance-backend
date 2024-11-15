@@ -16,8 +16,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::select('id', 'name', 'email', 'role', 'etat')
-        ->get();
+        $users = User::orderBy('id', 'desc')->get();
+        return response()->json([
+            "success" => true,
+            "users" => $users->load('role'),
+        ]);
     }
 
     /**
@@ -36,8 +39,8 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'role' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+            'role_id' => 'required|integer|exists:roles,id',
             'etat' => 'required|string',
         ]);
 
@@ -45,7 +48,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role_id' => $request->role_id,
             'etat' => $request->etat,
         ]);
 
