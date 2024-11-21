@@ -22,7 +22,7 @@ class UserController extends Controller
                         ->orderBy('id', 'desc')->get();
         return response()->json([
             "success" => true,
-            "users" => $users,
+            "users" =>$users->load('role', 'affectation.agence'),
         ]);
         //return $users;
     }

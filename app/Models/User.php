@@ -49,9 +49,29 @@ class User extends Authenticatable
         return $this->belongsto(Role::class);
     }
 
+     /**
+     * Relation : Un utilisateur a une affectation.
+     * La date de désaffectation est définie comme `null` par défaut.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function affectation()
     {
-        return $this->hasOne(AgenceUser::class, 'user_id', 'id');
+        return $this->hasOne(AgenceUser::class, 'user_id')
+            ->whereNull('date_desaffectation'); // Filtre pour obtenir uniquement les affectations actives
+    }
+
+    /**
+     * Définit l'ID utilisateur pour une affectation.
+     *
+     * @param \App\Models\AgenceUser $affectation
+     * @return void
+     */
+    public function assignAffectation(AgenceUser $affectation)
+    {
+        $affectation->user_id = $this->id; // Associe l'utilisateur courant à l'affectation
+        $affectation->date_desaffectation = null; // Définit la désaffectation comme null
+        $affectation->save(); // Enregistre les modifications
     }
 
 
