@@ -11,20 +11,25 @@ use App\Models\ContratQuestionnaire;
 use App\Models\Produit;
 use DB;
 use PDF;
-
+use Illuminate\Support\Facades\Auth;
 
 class ContratController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware("auth:sanctum");
+    // }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $contrats = DB::table('contrats')
                         ->select('contrats.id','contrats.numprojet','contrats.dateeffet','contrats.dateeche','contrats.montantpret','contrats.primetotale','contrats.montantpret',
                                 'contrats.duree_pret','contrats.differe',
                                 'clients.nom','clients.prenom','clients.numcompte','clients.codeagence','clients.clerib')
                         ->join('clients', 'clients.id', '=', 'contrats.client_id')
+                        ->orderBy('id','desc')
                         ->get();
         return $contrats;
     }
@@ -92,7 +97,7 @@ class ContratController extends Controller
         $contrat->primetotale = $precontrat->primetotale;
         $contrat->cout_police = $precontrat->cout_police;
         $contrat->banque_id = $precontrat->banque_id;
-        //$contrat->agence_id = $request->agence_id;
+        $contrat->agence_id = 2;
         $contrat->produit_id =  $precontrat->produit_id;
         $contrat->contrat_travail = $precontrat->contrat_travail;
         $contrat->client_id = $precontrat->client_id;
@@ -101,6 +106,7 @@ class ContratController extends Controller
         $contrat->contrat_travail_ext = $precontrat->contrat_travail_ext;
         $contrat->employeur = $precontrat->employeur;
         $contrat->precontrat_id = $precontrat->id;
+        //$contrat->user_id = Auth::user()->id;
         $contrat->save();
 
         $precontrat_questionnaires = PreContratQuestionnaire::where('precontrat_id',$precontrat->id)

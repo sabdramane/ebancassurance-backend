@@ -41,6 +41,7 @@ return new class extends Migration
             $table->unsignedBigInteger('rapprochement_id')->nullable();
             $table->unsignedBigInteger('beneficiaire_id')->nullable();
             $table->unsignedBigInteger('precontrat_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('produit_id')->references('id')
                                             ->on('produits')
                                             ->onDelete('cascade')
@@ -67,6 +68,10 @@ return new class extends Migration
                                             ->onUpdate('cascade');
             $table->foreign('precontrat_id')->references('id')
                                             ->on('precontrats')
+                                            ->onDelete('cascade')
+                                            ->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')
+                                            ->on('users')
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');
             $table->timestamps();
