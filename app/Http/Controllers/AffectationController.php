@@ -119,6 +119,7 @@ class AffectationController extends Controller
                 "message" => "Affectation non trouvée.",
             ], 404);
         }
+       
 
         $validator = Validator::make($request->all(), $this->rules);
 
@@ -129,8 +130,10 @@ class AffectationController extends Controller
             ], 422);
         }
 
-      
-        $affectation->update($request->only(['agence_id', 'user_id', 'date_affectation']));
+        $affectation->date_desaffectation = $request->date_affectation;
+        $affectation->save();
+        //$affectation->update($request->only(['agence_id', 'user_id', 'date_affectation']));
+        $affectation = AgenceUser::create($request->only(['agence_id', 'user_id', 'date_affectation']));
 
         return response()->json([
             "success" => true,

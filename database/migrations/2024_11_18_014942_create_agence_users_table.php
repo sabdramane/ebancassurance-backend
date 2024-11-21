@@ -24,6 +24,7 @@ return new class extends Migration
                                          ->onDelete('cascade')
                                          ->onUpdate('cascade');
             $table->date('date_affectation')->nullable()->default(null);
+            $table->date('date_desaffectation')->nullable()->default(null);
             $table->timestamps();
         });
     }

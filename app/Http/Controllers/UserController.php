@@ -16,11 +16,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('id', 'desc')->get();
+        $users = User::with(['affectation' => function ($query) {
+                            $query->whereNull('date_desaffectation');
+                        }])
+                        ->orderBy('id', 'desc')->get();
         return response()->json([
             "success" => true,
-            "users" => $users->load('role', 'affectation.agence'),
+            "users" => $users,
         ]);
+        //return $users;
     }
 
     /**
