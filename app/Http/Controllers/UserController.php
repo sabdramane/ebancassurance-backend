@@ -74,9 +74,13 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(Request $request, User $user)
     {
-        $user->update($request->validated());
+        $request->validate([
+            'etat' => 'required|boolean',
+        ]);
+
+        $user->update($request->all());
         return response()->json([
             'messge' => 'Mise à jour éffectuée'
         ]);
