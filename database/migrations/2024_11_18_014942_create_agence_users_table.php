@@ -20,7 +20,7 @@ return new class extends Migration
                                          ->onUpdate('cascade');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')
-                                         ->on('garanties')
+                                         ->on('users')
                                          ->onDelete('cascade')
                                          ->onUpdate('cascade');
             $table->date('date_affectation')->nullable()->default(null);
