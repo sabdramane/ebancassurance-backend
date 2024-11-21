@@ -49,5 +49,10 @@ class User extends Authenticatable
         return $this->belongsto(Role::class);
     }
 
+    public function affectation()
+    {
+        return $this->hasOne(AgenceUser::class, 'user_id', 'id');
+    }
+
 
 }

@@ -19,7 +19,7 @@ class UserController extends Controller
         $users = User::orderBy('id', 'desc')->get();
         return response()->json([
             "success" => true,
-            "users" => $users->load('role'),
+            "users" => $users->load('role', 'affectation.agence'),
         ]);
     }
 
@@ -41,7 +41,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role_id' => 'required|integer|exists:roles,id',
-            'etat' => 'required|string',
+            'etat' => 'required|boolean',
         ]);
 
         $user = User::create([
