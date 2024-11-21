@@ -9,10 +9,14 @@ use DateTime;
 use App\Models\PreContrat;
 use App\Models\Beneficiaire;
 use App\Models\Client;
-
+use Auth;
 
 class PreContratController extends Controller
 {
+     // public function __construct()
+    // {
+    //     $this->middleware("auth:sanctum");
+    // }
     /**
      * Display a listing of the resource.
      */
@@ -197,6 +201,7 @@ class PreContratController extends Controller
                 $precontrat->contrat_travail_ext = $extension_fichier;
                 $precontrat->employeur = $request->employeur;
             }
+           // $precontrat->user_id = Auth::user()->id;
             $precontrat->save();
         }
 
