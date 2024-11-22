@@ -57,8 +57,8 @@ class User extends Authenticatable
      */
     public function affectation()
     {
-        return $this->hasOne(AgenceUser::class, 'user_id')
-            ->whereNull('date_desaffectation'); // Filtre pour obtenir uniquement les affectations actives
+        return $this->hasOne(AgenceUser::class, 'user_id')->with('agence');
+           // ->whereNull('date_desaffectation'); // Filtre pour obtenir uniquement les affectations actives
     }
 
     /**

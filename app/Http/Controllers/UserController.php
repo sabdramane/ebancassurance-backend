@@ -19,10 +19,11 @@ class UserController extends Controller
         $users = User::with(['affectation' => function ($query) {
                             $query->whereNull('date_desaffectation');
                         }])
+                        ->with('role')
                         ->orderBy('id', 'desc')->get();
         return response()->json([
             "success" => true,
-            "users" =>$users->load('role', 'affectation.agence'),
+            "users" =>$users,
         ]);
         //return $users;
     }
