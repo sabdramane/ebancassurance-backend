@@ -10,6 +10,15 @@ class Prestation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','libelle'
+        'id','client_id','type_prestation_id','date_declaration','date_survenance',
+        'etat','declaration','contrat_assurance','piece_identite','tableau_amortissement',
+        'acte_deces','certificat_deces','acte_licenciement','certificat_travail','invalidite'
     ];
+
+    public function client(){
+        return $this->belongsto(Client::class);
+    }
+    public function typePrestation(){
+        return $this->belongsto(TypePrestation::class);
+    }
 }

@@ -11,7 +11,7 @@ class PrestationPostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class PrestationPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'libelle'=>'required'
+            'type_prestation_id'=>'required'
         ];
     }
 }
