@@ -16,9 +16,12 @@ class TypePrestationController extends Controller
      */
     public function index()
     {
-        return TypePrestation::select('id', 'libelle')
-        ->get();
-        // return new TypePrestationCollection(TypePrestation::all());
+        $typePrestations = TypePrestation::select('id', 'libelle')
+            ->get();
+        return response()->json([
+            "success" => true,
+            "data" => $typePrestations,
+        ]);
     }
 
     /**
