@@ -22,7 +22,6 @@ class PrestationController extends Controller
             "success" => true,
             "prestations" =>$prestations->load(['client', 'typePrestation']),
         ]);
-        return $prestations;
     }
 
     /**
@@ -138,7 +137,11 @@ class PrestationController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $prestation = Prestation::findOrFail( $id );
+        return response()->json([
+            "success" => true,
+            "prestation" =>$prestation->load(['client', 'typePrestation']),
+        ]);
     }
 
     /**
