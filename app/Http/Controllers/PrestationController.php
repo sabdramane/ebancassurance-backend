@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\prestation\PrestationPostRequest;
 use App\Models\Client;
 use App\Models\TypePrestation;
 use App\Models\BdbanqueClient;
 use App\Models\Prestation;
+use Response;
 
 
 class PrestationController extends Controller
@@ -17,10 +19,10 @@ class PrestationController extends Controller
      */
     public function index()
     {
-        $prestations = Prestation::orderBy('id','desc')->get();
+        $prestations = Prestation::orderBy('id', 'desc')->get();
         return response()->json([
             "success" => true,
-            "prestations" =>$prestations->load(['client', 'typePrestation']),
+            "prestations" => $prestations->load(['client', 'typePrestation']),
         ]);
     }
 
@@ -37,37 +39,37 @@ class PrestationController extends Controller
      */
     public function store(PrestationPostRequest $request)
     {
-        $client = Client::where('codeagence',$request->codeagence)
-                                    ->where('numcompte',$request->numcompte)
-                                    ->where('clerib',$request->clerib)
-                                    ->first();
+        $client = Client::where('codeagence', $request->codeagence)
+            ->where('numcompte', $request->numcompte)
+            ->where('clerib', $request->clerib)
+            ->first();
 
-        if($client == null){
-           $bdbanque_clients = BdbanqueClient::where('codeagence',$request->codeagence)
-                                            ->where('numcompte',$request->numcompte)
-                                            ->where('clerib',$request->clerib)
-                                            ->first();
+        if ($client == null) {
+            $bdbanque_clients = BdbanqueClient::where('codeagence', $request->codeagence)
+                ->where('numcompte', $request->numcompte)
+                ->where('clerib', $request->clerib)
+                ->first();
             if ($bdbanque_clients == null) {
                 $client = new Client();
-                $client->codeagence =$request->codeagence; 
-                $client->numcompte =$request->numcompte; 
-                $client->clerib =$request->clerib; 
-                $client->nom =$request->nom; 
-                $client->prenom =$request->prenom; 
-                $client->save(); 
-            }else{
+                $client->codeagence = $request->codeagence;
+                $client->numcompte = $request->numcompte;
+                $client->clerib = $request->clerib;
+                $client->nom = $request->nom;
+                $client->prenom = $request->prenom;
+                $client->save();
+            } else {
                 $client = new Client();
-                $client->codeagence =$request->codeagence; 
-                $client->numcompte =$request->numcompte; 
-                $client->clerib =$request->clerib; 
-                $client->nom =$bdbanque_clients->nom; 
-                $client->prenom =$bdbanque_clients->prenom; 
-                $client->dateNaissance =$bdbanque_clients->dateNaissance; 
-                $client->civilite =$bdbanque_clients->civilite; 
-                $client->profession =$bdbanque_clients->profession; 
-                $client->telephone =$bdbanque_clients->telephone; 
-                $client->email =$bdbanque_clients->email; 
-                $client->save(); 
+                $client->codeagence = $request->codeagence;
+                $client->numcompte = $request->numcompte;
+                $client->clerib = $request->clerib;
+                $client->nom = $bdbanque_clients->nom;
+                $client->prenom = $bdbanque_clients->prenom;
+                $client->dateNaissance = $bdbanque_clients->dateNaissance;
+                $client->civilite = $bdbanque_clients->civilite;
+                $client->profession = $bdbanque_clients->profession;
+                $client->telephone = $bdbanque_clients->telephone;
+                $client->email = $bdbanque_clients->email;
+                $client->save();
             }
         }
 
@@ -78,8 +80,8 @@ class PrestationController extends Controller
         $prestation->date_declaration = $request->date_declaration;
         $prestation->date_survenance = $request->date_survenance;
         $prestation->date_survenance = $request->date_survenance;
-        
-        if($files = $request->file('declaration')) {
+
+        if ($files = $request->file('declaration')) {
             $nom_fichier = $request->declaration->hashName();
             $fichier = $request->declaration->move("storage/imports/prestations/documents/", $nom_fichier);
             $prestation->declaration = $nom_fichier;
@@ -128,7 +130,7 @@ class PrestationController extends Controller
 
         return response()->json([
             "success" => true,
-            "prestation" =>$prestation,
+            "prestation" => $prestation,
         ]);
     }
 
@@ -137,10 +139,10 @@ class PrestationController extends Controller
      */
     public function show(string $id)
     {
-        $prestation = Prestation::findOrFail( $id );
+        $prestation = Prestation::findOrFail($id);
         return response()->json([
             "success" => true,
-            "prestation" =>$prestation->load(['client', 'typePrestation']),
+            "prestation" => $prestation->load(['client', 'typePrestation']),
         ]);
     }
 
@@ -167,4 +169,40 @@ class PrestationController extends Controller
     {
         //
     }
+
+    public function downloadFile($filename)
+    {
+
+        //  $filepath = public_path('storage/imports/prestations/documents/' . $filename);
+        //  return Response::download($filepath);
+
+        $filepath = public_path('storage/imports/prestations/documents/' . $filename);
+
+        if (file_exists($filepath)) {
+            $mimeType = mime_content_type($filepath); 
+
+            // Liste des types MIME pris en charge
+            $allowedMimeTypes = [
+                'application/pdf',          // PDF
+                'image/jpeg',               // Images JPEG
+                'image/png',                // Images PNG
+                'application/msword',       // Fichiers Word (.doc)
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Fichiers Word (.docx)
+                'application/vnd.ms-excel', // Fichiers Excel (.xls)
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Fichiers Excel (.xlsx)
+            ];
+
+            if (in_array($mimeType, $allowedMimeTypes)) {
+                return response()->file($filepath, [
+                    'Content-Type' => $mimeType,
+                    'Content-Disposition' => 'inline', // Ouvrir dans le navigateur si possible
+                ]);
+            } else {
+                return response()->json(['message' => 'File type not supported for inline viewing.'], 400);
+            }
+        } else {
+            return response()->json(['message' => 'File not found.'], 404);
+        }
+    }
+
 }
