@@ -9,14 +9,18 @@ use DateTime;
 use App\Models\PreContrat;
 use App\Models\Beneficiaire;
 use App\Models\Client;
+use App\Models\AgenceUser;
+use App\Models\Agence;
 use Auth;
+use Carbon\Carbon;
+
 
 class PreContratController extends Controller
 {
-     // public function __construct()
-    // {
-    //     $this->middleware("auth:sanctum");
-    // }
+     public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
@@ -38,9 +42,11 @@ class PreContratController extends Controller
      */
     public function store(ContratPostRequest $request)
     {
-       $datenaissance = explode("/",$request->datenaissance);
-       $datenaissance = new DateTime($datenaissance[2]."/".$datenaissance[1]."/".$datenaissance[0]);
-    
+       
+        $datenaissance =Carbon::createFromFormat('d/m/Y', $request->datenaissance);
+      // $datenaissance = new DateTime("17/12/2024");
+        
+       // return "OK".$datenaissance->format('Y');
         $datejour = new DateTime();
         $annenaissance = $datenaissance->format('Y');
         $annejour =  $datejour->format('Y');
@@ -48,25 +54,28 @@ class PreContratController extends Controller
         //Determinons la durée du contrats
         $duree_contrat = $request->duree;
         $taux_differe_appl = 0;
-       
+        $agence_user = AgenceUser::where('user_id',Auth::user()->id)
+                                    ->whereNull('date_desaffectation')->first();
+        $agence = Agence::find($agence_user->agence_id);
+
         //Déterminons le code tarif Flex à appliquer 
         $banque_garantie_tarif_flex = DB::table('banque_garantie_tarifs')
                                                 ->select('banque_garantie_tarifs.*')
-                                                ->where('banque_garantie_tarifs.banque_id',$request->banque_id)
+                                                ->where('banque_garantie_tarifs.banque_id',$agence->banque_id)
                                                 ->where('banque_garantie_tarifs.produit_id',$request->produit_id)
                                                 ->where('banque_garantie_tarifs.garantie_id',1)
                                                 ->first();
         //Déterminons le code tarif prévoyance à appliquer
         $banque_garantie_tarif_prevoyance = DB::table('banque_garantie_tarifs')
                                                 ->select('banque_garantie_tarifs.*')
-                                                ->where('banque_garantie_tarifs.banque_id',$request->banque_id)
+                                                ->where('banque_garantie_tarifs.banque_id',$agence->banque_id)
                                                 ->where('banque_garantie_tarifs.produit_id',$request->produit_id)
                                                 ->where('banque_garantie_tarifs.garantie_id',5)
                                                 ->first();
         //Déterminons le code tarif Perte emploi à appliquer
         $banque_garantie_tarif_perte_emploi = DB::table('banque_garantie_tarifs')
                                                 ->select('banque_garantie_tarifs.*')
-                                                ->where('banque_garantie_tarifs.banque_id',$request->banque_id)
+                                                ->where('banque_garantie_tarifs.banque_id',$agence->banque_id)
                                                 ->where('banque_garantie_tarifs.produit_id',$request->produit_id)
                                                 ->where('banque_garantie_tarifs.garantie_id',4)
                                                 ->first();
@@ -74,7 +83,7 @@ class PreContratController extends Controller
         //Déterminons le code tarif BEOGO à appliquer
         $banque_garantie_tarif_beogo = DB::table('banque_garantie_tarifs')
                                             ->select('banque_garantie_tarifs.*')
-                                            ->where('banque_garantie_tarifs.banque_id',$request->banque_id)
+                                            ->where('banque_garantie_tarifs.banque_id',$agence->banque_id)
                                             ->where('banque_garantie_tarifs.produit_id',$request->produit_id)
                                             ->where('banque_garantie_tarifs.garantie_id',7)
                                             ->first();
@@ -122,6 +131,7 @@ class PreContratController extends Controller
                             ->where('tableau_tarifs.tarif_id',$banque_garantie_tarif_beogo->tarif_id)
                             ->first();
         $prime_nette_beogo = 0;
+        $prime_nette_perte_emploi = 0;
 
         $taux_fractionnement = 1;
         if($request->periodicite == "Mensuelle"){
@@ -141,7 +151,10 @@ class PreContratController extends Controller
         }
 
         $prime_nette_prevoyance = $request->capitalprevoyance * round($taux_prevoyance->taux,5);
-        $prime_nette_perte_emploi = $request->montant_traite *$taux_perte_emploi->taux;
+        
+        if($request->perteEmploi == 1){
+            $prime_nette_perte_emploi = $request->montant_traite *$taux_perte_emploi->taux;
+        }
 
         if ($request->beogo == 1) {
            $prime_nette_beogo = 1000000*$taux_beogo->taux;
@@ -150,6 +163,7 @@ class PreContratController extends Controller
 
         $prime_totale = $prime_nette_flex+$prime_nette_prevoyance+$prime_nette_perte_emploi+$prime_nette_beogo+$cout_police;
         $client = Client::find($request->client_id);
+
         if ($client == null) {
             return response()->json([
                 'message' => "Le client n'existe pas"
@@ -161,6 +175,7 @@ class PreContratController extends Controller
         if ($precontrat != null) {
             //$precontrat = new PreContrat();
             $precontrat->type_pret = $request->type_pret;
+            $precontrat->numdossier = $request->numdossier;
             $precontrat->dateeche = $request->dateeche;
             $precontrat->dateeffet = $request->dateeffet;
             $precontrat->datesaisie = $request->datesaisie;
@@ -178,8 +193,8 @@ class PreContratController extends Controller
             $precontrat->prime_beogo = $prime_nette_beogo;
             $precontrat->primetotale = round($prime_totale,0);
             $precontrat->cout_police = $cout_police;
-            $precontrat->banque_id = $request->banque_id;
-            //$precontrat->agence_id = $request->agence_id;
+            $precontrat->banque_id = $agence->banque_id;
+            $precontrat->agence_id = $agence->id;
             $precontrat->produit_id = $request->produit_id;
             $precontrat->contrat_travail = $request->produit_id;
             $precontrat->client_id = $client->id;
@@ -189,7 +204,6 @@ class PreContratController extends Controller
                 $beneficiaire->beneficiaire_nom = $request->beneficiaire;
                 $beneficiaire->telephone = $request->contact_beneficiaire;
                 $beneficiaire->save() ;
-    
                 $precontrat->beneficiaire_id = $beneficiaire->id;
             }
     
@@ -201,10 +215,14 @@ class PreContratController extends Controller
                 $precontrat->contrat_travail_ext = $extension_fichier;
                 $precontrat->employeur = $request->employeur;
             }
-           // $precontrat->user_id = Auth::user()->id;
+            $precontrat->user_id = Auth::user()->id;
             $precontrat->save();
         }
 
+        // return response()->json([
+        //     "success" => true,
+        //     "precontrat" =>$precontrat,
+        // ]);
         return $precontrat;
     }
 

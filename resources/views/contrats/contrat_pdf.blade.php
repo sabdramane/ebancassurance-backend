@@ -11,7 +11,7 @@
 <div style="margin-top: -30px">
     <p> Agence : <span style="font-weight: bold">{{ $contrat->agence->libeagence}}</span>
         <span style="margin-left:100px">
-            Agent : <span style="font-weight: bold">SANOU DRAMANE</span>
+            Agent : <span style="font-weight: bold">{{ $contrat->user->name}}</span>
         </span>
     </p> 
     <br>

@@ -5,10 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use DateTime;
+use Auth;
 use App\Models\Simulation;
+use App\Models\Agence;
+use App\Models\AgenceUser;
 
 class SimulationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -43,24 +51,28 @@ class SimulationController extends Controller
         $duree_contrat = $request->duree;
         $taux_differe_appl = 0;
        
+        $agence_user = AgenceUser::where('user_id',Auth::user()->id)
+                                    ->whereNull('date_desaffectation')->first();
+        $agence = Agence::find($agence_user->agence_id);
+
         //Déterminons le code tarif Flex à appliquer 
         $banque_garantie_tarif_flex = DB::table('banque_garantie_tarifs')
                                                 ->select('banque_garantie_tarifs.*')
-                                                ->where('banque_garantie_tarifs.banque_id',$request->banque_id)
+                                                ->where('banque_garantie_tarifs.banque_id',$agence->banque_id)
                                                 ->where('banque_garantie_tarifs.produit_id',$request->produit_id)
                                                 ->where('banque_garantie_tarifs.garantie_id',1)
                                                 ->first();
         //Déterminons le code tarif prévoyance à appliquer
         $banque_garantie_tarif_prevoyance = DB::table('banque_garantie_tarifs')
                                                 ->select('banque_garantie_tarifs.*')
-                                                ->where('banque_garantie_tarifs.banque_id',$request->banque_id)
+                                                ->where('banque_garantie_tarifs.banque_id',$agence->banque_id)
                                                 ->where('banque_garantie_tarifs.produit_id',$request->produit_id)
                                                 ->where('banque_garantie_tarifs.garantie_id',5)
                                                 ->first();
         //Déterminons le code tarif Perte emploi à appliquer
         $banque_garantie_tarif_perte_emploi = DB::table('banque_garantie_tarifs')
                                                 ->select('banque_garantie_tarifs.*')
-                                                ->where('banque_garantie_tarifs.banque_id',$request->banque_id)
+                                                ->where('banque_garantie_tarifs.banque_id',$agence->banque_id)
                                                 ->where('banque_garantie_tarifs.produit_id',$request->produit_id)
                                                 ->where('banque_garantie_tarifs.garantie_id',4)
                                                 ->first();
@@ -116,6 +128,7 @@ class SimulationController extends Controller
                             ->where('tableau_tarifs.tarif_id',$banque_garantie_tarif_beogo->tarif_id)
                             ->first();
         $prime_nette_beogo = 0;
+        $prime_nette_perte_emploi = 0;
 
         $taux_fractionnement = 1;
         if($request->periodicite == "Mensuelle"){
@@ -135,8 +148,10 @@ class SimulationController extends Controller
         }
 
         $prime_nette_prevoyance = $request->capitalprevoyance * round($taux_prevoyance->taux,5);
-        $prime_nette_perte_emploi = $request->montant_traite *$taux_perte_emploi->taux;
-
+        
+        if($request->perteEmploi == 1){
+            $prime_nette_perte_emploi = $request->montant_traite *$taux_perte_emploi->taux;
+        }
         if ($request->beogo == 1) {
            $prime_nette_beogo = 1000000*$taux_beogo->taux;
         }
@@ -161,9 +176,10 @@ class SimulationController extends Controller
         $simulation->prime_beogo = $prime_nette_beogo;
         $simulation->primetotale = $prime_totale;
         $simulation->cout_police = $cout_police;
-        $simulation->banque_id = $request->banque_id;
-        //$simulation->agence_id = $request->agence_id;
+        $simulation->banque_id = $agence->banque_id;
+        $simulation->agence_id = $agence->id;
         $simulation->produit_id = $request->produit_id;
+        $simulation->user_id = Auth::user()->id;
         $simulation->save();
       
         return  $simulation;

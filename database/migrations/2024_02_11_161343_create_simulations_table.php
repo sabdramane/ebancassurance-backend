@@ -30,6 +30,7 @@ return new class extends Migration
             $table->unsignedBigInteger('banque_id')->nullable();
             $table->unsignedBigInteger('agence_id')->nullable();
             $table->unsignedBigInteger('produit_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('banque_id')->references('id')
                                             ->on('banques')
                                             ->onDelete('cascade')
@@ -40,6 +41,10 @@ return new class extends Migration
                                             ->onUpdate('cascade');
             $table->foreign('produit_id')->references('id')
                                             ->on('produits')
+                                            ->onDelete('cascade')
+                                            ->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')
+                                            ->on('users')
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');
             $table->timestamps();

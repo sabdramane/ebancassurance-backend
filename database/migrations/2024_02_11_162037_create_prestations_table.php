@@ -28,12 +28,17 @@ return new class extends Migration
             $table->string("acte_licenciement")->nullable();
             $table->string("certificat_travail")->nullable();
             $table->string("invalidite")->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('type_prestation_id')->references('id')
                                             ->on('type_prestations')
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');
             $table->foreign('client_id')->references('id')
                                             ->on('clients')
+                                            ->onDelete('cascade')
+                                            ->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')
+                                            ->on('users')
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');
             $table->timestamps();

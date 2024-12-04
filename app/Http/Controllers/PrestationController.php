@@ -10,10 +10,14 @@ use App\Models\TypePrestation;
 use App\Models\BdbanqueClient;
 use App\Models\Prestation;
 use Response;
-
+use Auth;
 
 class PrestationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
@@ -126,6 +130,7 @@ class PrestationController extends Controller
             $fichier = $request->certificat_travail->move("storage/imports/prestations/documents/", $nom_fichier);
             $prestation->certificat_travail = $nom_fichier;
         }
+        $prestation->user_id = Auth::user()->id;
         $prestation->save();
 
         return response()->json([

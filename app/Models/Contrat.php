@@ -27,5 +27,8 @@ class Contrat extends Model
         return $this->belongsto(Client::class);
     }
 
+    public function user(){
+        return $this->belongsto(User::class);
+    }
 
 }

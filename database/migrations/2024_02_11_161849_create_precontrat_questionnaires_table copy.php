@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('precontrat_id')->nullable();
             $table->unsignedBigInteger('questionnaire_medical_id')->nullable();
             $table->foreign('precontrat_id')->references('id')
-                                            ->on('precontrats')
+                                            ->on('pre_contrats')
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');
             $table->foreign('questionnaire_medical_id')->references('id')

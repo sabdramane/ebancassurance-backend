@@ -8,9 +8,19 @@ use App\Http\Requests\user\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Contrat;
+use App\Models\Prestation;
+use App\Models\AgenceUser;
+use App\Models\Agence;
+use Auth;
+
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
@@ -58,6 +68,28 @@ class UserController extends Controller
         ]);
 
         return response()->json(['user' => $user], 201);
+    }
+
+
+    public function getStatistiqueDashboard()
+    {
+        $agence_user = AgenceUser::where('user_id',Auth::user()->id)
+                                    ->whereNull('date_desaffectation')->first();
+        $agence = Agence::find($agence_user->agence_id);
+
+        $contrat = Contrat::where('etat','validé')
+                            ->where('agence_id',$agence->id)
+                            ->get();
+        $sinistres = Prestation::all();
+        $totalengagement = $contrat->sum('montantpret')+$contrat->sum('capitalprevoyance');
+        return response()->json([
+            "success" => true,
+            "totalcontrat" =>$contrat->count(),
+            "totalprime" =>formatPrixBf($contrat->sum('primetotale')),
+            "totalengagement" =>formatPrixBf($totalengagement),
+            'totalsinistre' => $sinistres->count(),
+        ]);
+        
     }
 
     /**

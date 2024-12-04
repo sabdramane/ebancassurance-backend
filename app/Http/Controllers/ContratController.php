@@ -9,16 +9,17 @@ use App\Models\QuestionnaireMedical;
 use App\Models\PreContratQuestionnaire;
 use App\Models\ContratQuestionnaire;
 use App\Models\Produit;
+use App\Models\Agence;
 use DB;
 use PDF;
 use Illuminate\Support\Facades\Auth;
 
 class ContratController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware("auth:sanctum");
-    // }
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
@@ -54,9 +55,12 @@ class ContratController extends Controller
                             ->where('agence_id',$precontrat->agence_id)
                             ->get();
         
+        $agence = Agence::find($precontrat->agence_id);
+
         $codeproduit = $produit->codeprod;
         $nbcontrat = 0;
         $numprojet = 0;
+        
         if($contrats == null){
             $nbcontrat = 1;
         }else{
@@ -79,6 +83,7 @@ class ContratController extends Controller
         $contrat = new contrat();
         $contrat->numprojet = $numprojet;
         $contrat->type_pret = $precontrat->type_pret;
+        $contrat->numdossier = $precontrat->numdossier;
         $contrat->dateeche = $precontrat->dateeche;
         $contrat->dateeffet = $precontrat->dateeffet;
         $contrat->datesaisie = $precontrat->datesaisie;
@@ -96,8 +101,8 @@ class ContratController extends Controller
         $contrat->prime_beogo = $precontrat->prime_beogo;
         $contrat->primetotale = $precontrat->primetotale;
         $contrat->cout_police = $precontrat->cout_police;
-        $contrat->banque_id = $precontrat->banque_id;
-        $contrat->agence_id = 2;
+        $contrat->banque_id = $agence->banque_id;
+        $contrat->agence_id = $agence->id;
         $contrat->produit_id =  $precontrat->produit_id;
         $contrat->contrat_travail = $precontrat->contrat_travail;
         $contrat->client_id = $precontrat->client_id;
@@ -106,7 +111,8 @@ class ContratController extends Controller
         $contrat->contrat_travail_ext = $precontrat->contrat_travail_ext;
         $contrat->employeur = $precontrat->employeur;
         $contrat->precontrat_id = $precontrat->id;
-        //$contrat->user_id = Auth::user()->id;
+        $contrat->user_id = Auth::user()->id;
+        $contrat->etat = $request->statut;
         $contrat->save();
 
         $precontrat_questionnaires = PreContratQuestionnaire::where('precontrat_id',$precontrat->id)

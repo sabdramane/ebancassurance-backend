@@ -11,6 +11,10 @@ use DateTime;
 
 class ClientController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
@@ -25,8 +29,7 @@ class ClientController extends Controller
                                     ->where('numcompte',$request->numcompte)
                                     ->where('clerib',$request->clerib)
                                     ->first();
-        
-        
+
         $precontrat = new PreContrat();
         $precontrat->save();
 

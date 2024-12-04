@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('precontrats', function (Blueprint $table) {
+        Schema::create('pre_contrats', function (Blueprint $table) {
             $table->id();
             $table->string("numprojet")->nullable();
+            $table->string("numdossier")->nullable();
             $table->string("dateeffet")->nullable();
             $table->string("dateeche")->nullable();
             $table->string("datesaisie")->nullable();

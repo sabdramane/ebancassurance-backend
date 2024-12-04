@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('contrats', function (Blueprint $table) {
             $table->id();
             $table->string("numprojet")->nullable();
+            $table->string("numdossier")->nullable();
             $table->string("dateeffet")->nullable();
             $table->string("dateeche")->nullable();
             $table->string("datesaisie")->nullable();
@@ -67,7 +68,7 @@ return new class extends Migration
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');
             $table->foreign('precontrat_id')->references('id')
-                                            ->on('precontrats')
+                                            ->on('pre_contrats')
                                             ->onDelete('cascade')
                                             ->onUpdate('cascade');
             $table->foreign('user_id')->references('id')
