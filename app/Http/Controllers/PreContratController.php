@@ -175,7 +175,7 @@ class PreContratController extends Controller
         if ($precontrat != null) {
             //$precontrat = new PreContrat();
             $precontrat->type_pret = $request->type_pret;
-            $precontrat->numdossier = $request->numdossier;
+            $precontrat->numdossier = $request->numero_dossier;
             $precontrat->dateeche = $request->dateeche;
             $precontrat->dateeffet = $request->dateeffet;
             $precontrat->datesaisie = $request->datesaisie;

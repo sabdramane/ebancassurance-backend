@@ -80,7 +80,7 @@ class SimulationController extends Controller
         //Déterminons le code tarif BEOGO à appliquer
         $banque_garantie_tarif_beogo = DB::table('banque_garantie_tarifs')
                                             ->select('banque_garantie_tarifs.*')
-                                            ->where('banque_garantie_tarifs.banque_id',$request->banque_id)
+                                            ->where('banque_garantie_tarifs.banque_id',$agence->banque_id)
                                             ->where('banque_garantie_tarifs.produit_id',$request->produit_id)
                                             ->where('banque_garantie_tarifs.garantie_id',7)
                                             ->first();

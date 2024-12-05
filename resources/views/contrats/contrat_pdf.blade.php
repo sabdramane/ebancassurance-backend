@@ -250,7 +250,7 @@
                     {{ $quest->libelle}}
                 </td>
                 <td style="width: 92px;border: 1px solid black;border-collapse: collapse;text-align:center">
-                    @if ($quest->valeur == 0)
+                    @if ($quest->valeur == 'false' )
                         NON
                     @else
                         OUI

@@ -83,7 +83,7 @@ class ContratController extends Controller
         $contrat = new contrat();
         $contrat->numprojet = $numprojet;
         $contrat->type_pret = $precontrat->type_pret;
-        $contrat->numdossier = $precontrat->numdossier;
+        $contrat->numdossier = $precontrat->numero_dossier;
         $contrat->dateeche = $precontrat->dateeche;
         $contrat->dateeffet = $precontrat->dateeffet;
         $contrat->datesaisie = $precontrat->datesaisie;
