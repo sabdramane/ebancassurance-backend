@@ -196,7 +196,6 @@ class PreContratController extends Controller
             $precontrat->banque_id = $agence->banque_id;
             $precontrat->agence_id = $agence->id;
             $precontrat->produit_id = $request->produit_id;
-            $precontrat->contrat_travail = $request->produit_id;
             $precontrat->client_id = $client->id;
     
             if ($request->beneficiaire != "") {

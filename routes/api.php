@@ -118,3 +118,6 @@ Route::post('/precontrats-questionnaire/store', [PreContratQuestionnaireControll
 Route::get('/generer-contrat/{id}', [ContratController::class, 'printContrat']);
 Route::get('/prestations/download/{libelle}', [PrestationController::class, 'downloadFile']);
 Route::get('/dashboard/statistiques', [UserController::class, 'getStatistiqueDashboard']);
+Route::get('/edit-contrat/step-client/{contrat_id}', [ClientController::class, 'getClientStepEditContrat']);
+Route::post('/contrats-questionnaire/store', [ContratQuestionnaireController::class, 'store']);
+Route::post('/edit-contrat/final-step', [ContratController::class, 'storeFinalStep']);

@@ -32,7 +32,6 @@ class ClientPostRequest extends FormRequest
             'numcompte'=>'required',
             'clerib'=>'required',
             'codeagence'=>'required',
-            'codeagence'=>'required',
         ];
     }
 }
