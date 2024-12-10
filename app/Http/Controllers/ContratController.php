@@ -10,6 +10,7 @@ use App\Models\PreContratQuestionnaire;
 use App\Models\ContratQuestionnaire;
 use App\Models\Produit;
 use App\Models\Agence;
+use App\Models\Beneficiaire;
 use DB;
 use PDF;
 use Illuminate\Support\Facades\Auth;
