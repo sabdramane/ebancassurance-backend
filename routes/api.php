@@ -123,3 +123,4 @@ Route::post('/contrats-questionnaire/store', [ContratQuestionnaireController::cl
 Route::post('/edit-contrat/final-step', [ContratController::class, 'storeFinalStep']);
 
 Route::post('/update-client', [ClientController::class, 'updateClient']);
+Route::post('/update-tarification-contrat', [ClientController::class, 'updateContrat']);
