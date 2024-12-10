@@ -135,7 +135,7 @@ class ClientController extends Controller
 
         return response()->json([
             "success" => true,
-            'contrat'=>$contrat
+            'contrat'=>$request
         ]);
     }
 
@@ -145,5 +145,25 @@ class ClientController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function updateClient(Request $request) {
+        $client = Client::find($request->id);
+        
+        $client->update($request->all());
+
+        if ($files = $request->file('document_piece_identite')) {
+            $nom_fichier = $request->document_piece_identite->hashName();
+            $fichier = $request->document_piece_identite->move("storage/imports/document_piece_identite/", $nom_fichier);
+            $client->document_piece_identite = $nom_fichier;
+            $client->save();
+        }
+        //$client->contrat_id = $request->contrat_id;
+        $contrat = Contrat::find($request->contrat_id);
+
+        return response()->json([
+            "success" => true,
+            'contrat'=>$contrat
+        ]);
     }
 }

@@ -121,3 +121,5 @@ Route::get('/dashboard/statistiques', [UserController::class, 'getStatistiqueDas
 Route::get('/edit-contrat/step-client/{contrat_id}', [ClientController::class, 'getClientStepEditContrat']);
 Route::post('/contrats-questionnaire/store', [ContratQuestionnaireController::class, 'store']);
 Route::post('/edit-contrat/final-step', [ContratController::class, 'storeFinalStep']);
+
+Route::post('/update-client', [ClientController::class, 'updateClient']);

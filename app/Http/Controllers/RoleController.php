@@ -12,6 +12,7 @@ class RoleController extends Controller
 
     public function __construct()
     {
+        $this->middleware("auth:sanctum");
         $this->rules = [
             'libelle' => 'required|string|max:255',
             'description' => 'nullable|string|max:500'
