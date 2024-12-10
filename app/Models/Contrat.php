@@ -22,6 +22,10 @@ class Contrat extends Model
     public function agence(){
         return $this->belongsto(Agence::class);
     }
+    
+    public function beneficiaire(){
+        return $this->belongsto(Beneficiaire::class);
+    }
 
     public function client(){
         return $this->belongsto(Client::class);

@@ -13,10 +13,10 @@ use DateTime;
 
 class ClientController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware("auth:sanctum");
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware("auth:sanctum");
+    // }
     /**
      * Display a listing of the resource.
      */
@@ -163,7 +163,7 @@ class ClientController extends Controller
 
         return response()->json([
             "success" => true,
-            'contrat'=>$contrat
+            'contrat'=>$contrat->load(['beneficiaire'])
         ]);
     }
 }
