@@ -31,7 +31,7 @@ class ContratController extends Controller
     {
         $contrats = DB::table('contrats')
                         ->select('contrats.id','contrats.numprojet','contrats.dateeffet','contrats.dateeche','contrats.montantpret','contrats.primetotale','contrats.montantpret',
-                                'contrats.duree_pret','contrats.differe',
+                                'contrats.duree_pret','contrats.differe','contrats.etat',
                                 'clients.nom','clients.prenom','clients.numcompte','clients.codeagence','clients.clerib')
                         ->join('clients', 'clients.id', '=', 'contrats.client_id')
                         ->orderBy('id','desc')
