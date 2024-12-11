@@ -191,10 +191,11 @@ class ContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        
+
+        $contrat = Contrat::find($request->contrat_id);
         return response()->json([
             "success" => true,
-            "contrat_id" =>$request->contrat_id
+            "contrat" =>$contrat->load(['client','beneficiaire'])
         ]);
 
         
