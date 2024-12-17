@@ -14,10 +14,10 @@ use Auth;
 
 class PrestationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware("auth:sanctum");
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware("auth:sanctum");
+    // }
     /**
      * Display a listing of the resource.
      */
@@ -30,6 +30,14 @@ class PrestationController extends Controller
         ]);
     }
 
+    public function getRistourne()
+    {
+        $ristournes = Prestation::where('type_prestation_id',4)->orderBy('id', 'desc')->get();
+        return response()->json([
+            "success" => true,
+            "ristournes" => $ristournes->load(['client', 'typePrestation']),
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -131,6 +139,67 @@ class PrestationController extends Controller
             $prestation->certificat_travail = $nom_fichier;
         }
         $prestation->user_id = Auth::user()->id;
+        $prestation->save();
+
+        return response()->json([
+            "success" => true,
+            "prestation" => $prestation,
+        ]);
+    }
+
+    public function storeRistourne(Request $request) 
+    {
+        $client = Client::where('codeagence', $request->codeagence)
+            ->where('numcompte', $request->numcompte)
+            ->where('clerib', $request->clerib)
+            ->first();
+
+        if ($client == null) {
+            $bdbanque_clients = BdbanqueClient::where('codeagence', $request->codeagence)
+                ->where('numcompte', $request->numcompte)
+                ->where('clerib', $request->clerib)
+                ->first();
+            if ($bdbanque_clients == null) {
+                $client = new Client();
+                $client->codeagence = $request->codeagence;
+                $client->numcompte = $request->numcompte;
+                $client->clerib = $request->clerib;
+                $client->nom = $request->nom;
+                $client->prenom = $request->prenom;
+                $client->save();
+            } else {
+                $client = new Client();
+                $client->codeagence = $request->codeagence;
+                $client->numcompte = $request->numcompte;
+                $client->clerib = $request->clerib;
+                $client->nom = $bdbanque_clients->nom;
+                $client->prenom = $bdbanque_clients->prenom;
+                $client->dateNaissance = $bdbanque_clients->dateNaissance;
+                $client->civilite = $bdbanque_clients->civilite;
+                $client->profession = $bdbanque_clients->profession;
+                $client->telephone = $bdbanque_clients->telephone;
+                $client->email = $bdbanque_clients->email;
+                $client->save();
+            }
+        }
+
+        $prestation = new Prestation();
+        $prestation->type_prestation_id = 4;
+        $prestation->client_id = $client->id;
+        $prestation->numerocontrat = $request->numerocontrat;
+        $prestation->date_declaration = $request->date_declaration;
+
+        if ($files = $request->file('contrat_assurance')) {
+            $nom_fichier = $request->contrat_assurance->hashName();
+            $fichier = $request->contrat_assurance->move("storage/imports/prestations/documents/", $nom_fichier);
+            $prestation->contrat_assurance = $nom_fichier;
+        }
+        if ($files = $request->file('piece_identite')) {
+            $nom_fichier = $request->piece_identite->hashName();
+            $fichier = $request->piece_identite->move("storage/imports/prestations/documents/", $nom_fichier);
+            $prestation->piece_identite = $nom_fichier;
+        }
+        //$prestation->user_id = Auth::user()->id;
         $prestation->save();
 
         return response()->json([

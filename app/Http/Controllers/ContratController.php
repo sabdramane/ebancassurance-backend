@@ -668,6 +668,7 @@ class ContratController extends Controller
             }
 
             $contrat->numprojet = $numprojet;
+            $contrat->etat = "validé";
             $contrat->save();
         }
         return response()->json([
