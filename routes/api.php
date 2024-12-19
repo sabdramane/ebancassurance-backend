@@ -125,4 +125,7 @@ Route::post('/edit-contrat/final-step', [ContratController::class, 'storeFinalSt
 Route::post('/update-client', [ClientController::class, 'updateClient']);
 Route::post('/update-tarification-contrat', [ContratController::class, 'updateContrat']);
 Route::post('/store-ristourne', [PrestationController::class, 'storeRistourne']);
+Route::post('/update-ristourne', [PrestationController::class, 'updateRistourne']);
 Route::get('/ristournes', [PrestationController::class, 'getRistourne']);
+
+Route::post('/update-sinistres', [PrestationController::class, 'updateSinistre']);
