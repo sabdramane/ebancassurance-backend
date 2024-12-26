@@ -21,4 +21,13 @@ class Prestation extends Model
     public function typePrestation(){
         return $this->belongsto(TypePrestation::class);
     }
-}
+
+    public function commentaires() 
+    {
+        return $this->belongsToMany(Commentaire::class);    
+    }
+    public function piecejointes() 
+    {
+        return $this->belongsToMany(PieceJointe::class);    
+    }
+}   

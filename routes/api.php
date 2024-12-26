@@ -29,6 +29,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AffectationController;
+use App\Http\Controllers\CommentaireController;
+use App\Http\Controllers\PieceJointeController;
 use App\Models\Agence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -106,6 +108,9 @@ Route::apiResource('roles', RoleController::class);
 
 Route::apiResource('affectations', AffectationController::class);
 
+Route::apiResource('commentaires', CommentaireController::class);
+Route::apiResource('pieces-jointes', PieceJointeController::class);
+
 Route::get('/agences/{libelleparams}/{params_id}', [AgenceController::class, 'findAllByParams']);
 Route::get('/produits/{libelleparams}/{params_id}', [ProduitController::class, 'findAllByParams']);
 Route::post('/produits-banque', [ProduitController::class, 'insertProduitToBanque']);
@@ -129,3 +134,5 @@ Route::post('/update-ristourne', [PrestationController::class, 'updateRistourne'
 Route::get('/ristournes', [PrestationController::class, 'getRistourne']);
 
 Route::post('/update-sinistres', [PrestationController::class, 'updateSinistre']);
+Route::get('/commentaires-prestation/{prestation_id}', [CommentaireController::class, 'getCommentaires']);
+Route::get('/pieces-jointes-prestation/{prestation_id}', [PieceJointeController::class, 'getPieceJointes']);
