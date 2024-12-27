@@ -136,3 +136,4 @@ Route::get('/ristournes', [PrestationController::class, 'getRistourne']);
 Route::post('/update-sinistres', [PrestationController::class, 'updateSinistre']);
 Route::get('/commentaires-prestation/{prestation_id}', [CommentaireController::class, 'getCommentaires']);
 Route::get('/pieces-jointes-prestation/{prestation_id}', [PieceJointeController::class, 'getPieceJointes']);
+Route::get('/pieces-jointes-prestation/download/{libelle}', [PieceJointeController::class, 'downloadFile']);

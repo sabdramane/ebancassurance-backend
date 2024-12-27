@@ -92,4 +92,37 @@ class PieceJointeController extends Controller
         //
     }
 
+
+    public function downloadFile($filename)
+    {
+
+        $filepath = public_path('storage/imports/prestation/documents/' . $filename);
+
+        if (file_exists($filepath)) {
+            $mimeType = mime_content_type($filepath); 
+
+            // Liste des types MIME pris en charge
+            $allowedMimeTypes = [
+                'application/pdf',          // PDF
+                'image/jpeg',               // Images JPEG
+                'image/png',                // Images PNG
+                'application/msword',       // Fichiers Word (.doc)
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // Fichiers Word (.docx)
+                'application/vnd.ms-excel', // Fichiers Excel (.xls)
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Fichiers Excel (.xlsx)
+            ];
+
+            if (in_array($mimeType, $allowedMimeTypes)) {
+                return response()->file($filepath, [
+                    'Content-Type' => $mimeType,
+                    'Content-Disposition' => 'inline', // Ouvrir dans le navigateur si possible
+                ]);
+            } else {
+                return response()->json(['message' => 'File type not supported for inline viewing.'], 400);
+            }
+        } else {
+            return response()->json(['message' => 'File not found.'], 404);
+        }
+    }
+
 }
