@@ -442,4 +442,16 @@ class PrestationController extends Controller
         }
     }
 
+
+    public function cloturePrestation($prestation_id)
+    {
+        $prestation = Prestation::find($prestation_id);
+        $prestation->etat = "clôturé";
+        $prestation->save();
+        return response()->json([
+            "success" => true,
+            "message" => "Prestation clôturée",
+        ]);
+    }
+
 }

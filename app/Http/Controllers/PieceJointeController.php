@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\piecejointe\PieceJointeRequest;
 use App\Models\PieceJointe;
+use App\Models\Prestation;
 
 class PieceJointeController extends Controller
 {
@@ -39,13 +40,17 @@ class PieceJointeController extends Controller
 
             $extension_fichier = $request->fichier_joint->getClientOriginalExtension();
             $nom_fichier = $request->fichier_joint->hashName();
-            $fichier = $request->fichier_joint->move("storage/imports/prestation/documents/", $nom_fichier);
+            $fichier = $request->fichier_joint->move("storage/imports/prestations/documents/", $nom_fichier);
             
             $piecejointe->nom_document = $request->nom_document;
             $piecejointe->prestation_id = $request->prestation_id;
             $piecejointe->fichier_joint = $nom_fichier;
             $piecejointe->fichier_joint_ext = $extension_fichier;
             $piecejointe->save();
+
+            $prestation = Prestation::find($request->prestation_id);
+            $prestation->etat = "en cours de traitement";
+            $prestation->save();
         }
         return response()->json([
             'message' => 'Pièce jointe ajoutée avec succès'
@@ -96,7 +101,7 @@ class PieceJointeController extends Controller
     public function downloadFile($filename)
     {
 
-        $filepath = public_path('storage/imports/prestation/documents/' . $filename);
+        $filepath = public_path('storage/imports/prestations/documents/' . $filename);
 
         if (file_exists($filepath)) {
             $mimeType = mime_content_type($filepath); 

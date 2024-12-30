@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\commentaire\CommentaireRequest;
 use App\Models\Commentaire;
+use App\Models\Prestation;
 
 
 class CommentaireController extends Controller
@@ -35,6 +36,11 @@ class CommentaireController extends Controller
     public function store(CommentaireRequest $request)
     {
         Commentaire::create($request->post());
+
+        $prestation = Prestation::find($request->prestation_id);
+        $prestation->etat = "en cours de traitement";
+        $prestation->save();
+
         return response()->json([
             'message' => 'commentaire ajoutée avec succès'
         ]);
