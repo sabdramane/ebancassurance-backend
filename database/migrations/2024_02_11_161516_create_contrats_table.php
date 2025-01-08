@@ -35,6 +35,8 @@ return new class extends Migration
             $table->string("etat")->nullable();
             $table->string("contrat_travail")->nullable();
             $table->string("contrat_travail_ext")->nullable();
+            $table->double("montant_paye")->nullable();
+            $table->string("datecompt")->nullable();
             $table->unsignedBigInteger('produit_id')->nullable();
             $table->unsignedBigInteger('agence_id')->nullable();
             $table->unsignedBigInteger('banque_id')->nullable();
