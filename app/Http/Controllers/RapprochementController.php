@@ -16,7 +16,11 @@ class RapprochementController extends Controller
      */
     public function index()
     {
-        //
+        $rapprochements = Rapprochement::all();
+        return response()->json([
+            "success" => true,
+            "rapprochements" =>$rapprochements,
+        ]);
     }
 
     /**
@@ -92,7 +96,7 @@ class RapprochementController extends Controller
 
                 return response()->json([
                     "success" => true,
-                    "message" =>"Rapprochement effectué avec succès",
+                    "rapprochement" =>$rapprochement,
                 ]);
             }
             
