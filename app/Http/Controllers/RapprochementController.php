@@ -8,6 +8,8 @@ use Spatie\SimpleExcel\SimpleExcelWriter;
 use Spatie\SimpleExcel\SimpleExcelReader;
 use App\Models\Contrat;
 use App\Models\Rapprochement;
+use DB;
+
 
 class RapprochementController extends Controller
 {
@@ -149,9 +151,11 @@ class RapprochementController extends Controller
 
                 return response()->json([
                     "success" => true,
-                    "montant total reçu" =>$montanttotal_fichier,
-                    "montant rapproché" =>$montantrapproche,
-                    "montant non rapproché" =>$montant_non_rapproche,
+                    "data" =>[
+                        "montant_total_recu" =>$montanttotal_fichier,
+                        "montant_rapproche" =>$montantrapproche,
+                        "montant_non_rapproche" =>$montant_non_rapproche,
+                    ]
                 ]);
                 
             }
@@ -168,7 +172,38 @@ class RapprochementController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $rapprochement = Rapprochement::find($id);
+        $contrat_rapproches = DB::table('contrats')
+                        ->select('contrats.id','contrats.numprojet','contrats.dateeffet','contrats.dateeche','contrats.montantpret','contrats.primetotale','contrats.montantpret',
+                                'contrats.duree_pret','contrats.differe','contrats.etat',
+                                'clients.nom','clients.prenom','clients.numcompte','clients.codeagence','clients.clerib')
+                        ->join('clients', 'clients.id', '=', 'contrats.client_id')
+                        ->where('contrats.rapprochement_id',$id)
+                        ->orderBy('id','desc')
+                        ->get();
+        $contrat_non_rapproches = DB::table('contrats')
+                        ->select('contrats.id','contrats.numprojet','contrats.dateeffet','contrats.dateeche','contrats.montantpret','contrats.primetotale','contrats.montantpret',
+                                'contrats.duree_pret','contrats.differe','contrats.etat',
+                                'clients.nom','clients.prenom','clients.numcompte','clients.codeagence','clients.clerib')
+                        ->join('clients', 'clients.id', '=', 'contrats.client_id')
+                        ->whereBetween(
+                            DB::raw("STR_TO_DATE(contrats.datesaisie, '%d/%m/%Y')"), 
+                            [
+                                DB::raw("STR_TO_DATE('$rapprochement->datedebut', '%d/%m/%Y')"), // Conversion de la première date
+                                DB::raw("STR_TO_DATE('$rapprochement->datefin', '%d/%m/%Y')")
+                            ]
+                        )
+                        ->where('contrats.rapprochement_id',NULL)
+                        ->orderBy('id','desc')
+                        ->get();
+        return response()->json([
+            "success" => true,
+            "data" =>[
+                        "rapprochement" =>$rapprochement,
+                        "contrat_rapproches" =>$contrat_rapproches,
+                        "contrat_non_rapproches" =>$contrat_non_rapproches,
+            ]
+        ]);
     }
 
     /**
