@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Carbon;
 use App\Http\Requests\user\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -26,14 +27,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with(['affectation' => function ($query) {
-                            $query->whereNull('date_desaffectation');
-                        }])
-                        ->with('role')
-                        ->orderBy('id', 'desc')->get();
+        $users = User::with([
+            'affectation' => function ($query) {
+                $query->whereNull('date_desaffectation');
+            }
+        ])
+            ->with('role')
+            ->orderBy('id', 'desc')->get();
         return response()->json([
             "success" => true,
-            "users" =>$users,
+            "users" => $users,
         ]);
         //return $users;
     }
@@ -73,24 +76,75 @@ class UserController extends Controller
 
     public function getStatistiqueDashboard()
     {
-        $agence_user = AgenceUser::where('user_id',Auth::user()->id)
-                                    ->whereNull('date_desaffectation')->first();
+        $agence_user = AgenceUser::where('user_id', Auth::user()->id)
+            ->whereNull('date_desaffectation')
+            ->first();
+
+        if (!$agence_user) {
+            return response()->json([
+                "success" => false,
+                "message" => "Agence non trouvée pour l'utilisateur."
+            ], 404);
+        }
+
         $agence = Agence::find($agence_user->agence_id);
 
-        $contrat = Contrat::where('etat','validé')
-                            ->where('agence_id',$agence->id)
-                            ->get();
+        if (!$agence) {
+            return response()->json([
+                "success" => false,
+                "message" => "Agence introuvable."
+            ], 404);
+        }
+
+        $contrats = Contrat::where('etat', 'validé')
+            ->where('agence_id', $agence->id)
+            ->get();
+
         $sinistres = Prestation::all();
-        $totalengagement = $contrat->sum('montantpret')+$contrat->sum('capitalprevoyance');
+
+        $totalengagement = $contrats->sum('montantpret') + $contrats->sum('capitalprevoyance');
+
+        // Groupement des contrats validés par mois
+        $contratsParMois = $contrats->groupBy(function ($contrat) {
+            return Carbon::parse($contrat->created_at)->format('Y-m'); // Format "YYYY-MM"
+        })->map->count();
+
+        // Groupement des sinistres par mois
+        $sinistresParMois = $sinistres->groupBy(function ($sinistre) {
+            return Carbon::parse($sinistre->created_at)->format('Y-m'); // Format "YYYY-MM"
+        })->map->count();
+
+        // Extraction des labels (mois) distincts
+        $moisDisponibles = collect(array_merge(
+            $contratsParMois->keys()->toArray(),
+            $sinistresParMois->keys()->toArray()
+        ))->unique()->sort();
+
+        // Transformation en format lisible pour PrimeNG Charts
+        $labels = $moisDisponibles->map(function ($mois) {
+            return Carbon::createFromFormat('Y-m', $mois)->translatedFormat('F Y'); // Ex : "Janvier 2024"
+        })->values()->all();
+
+        $contratsData = $moisDisponibles->map(fn($mois) => $contratsParMois[$mois] ?? 0)->values()->all();
+        $sinistresData = $moisDisponibles->map(fn($mois) => $sinistresParMois[$mois] ?? 0)->values()->all();
+
         return response()->json([
             "success" => true,
-            "totalcontrat" =>$contrat->count(),
-            "totalprime" =>formatPrixBf($contrat->sum('primetotale')),
-            "totalengagement" =>formatPrixBf($totalengagement),
-            'totalsinistre' => $sinistres->count(),
+            "totalcontrat" => $contrats->count(),
+            "totalprime" => formatPrixBf($contrats->sum('primetotale')),
+            "totalengagement" => formatPrixBf($totalengagement),
+            "totalsinistre" => $sinistres->count(),
+            "contratData" => [
+                "labels" => $labels,
+                "data" => $contratsData
+            ],
+            "sinistreData" => [
+                "labels" => $labels,
+                "data" => $sinistresData
+            ]
         ]);
-        
     }
+
 
     /**
      * Display the specified resource.
