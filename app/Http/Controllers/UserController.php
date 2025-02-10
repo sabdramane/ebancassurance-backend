@@ -97,7 +97,7 @@ class UserController extends Controller
         }
 
         $contrats = Contrat::where('etat', 'validé')
-            ->where('agence_id', $agence->id)
+        // ->where('agence_id', $agence->id)
             ->get();
 
         $sinistres = Prestation::all();
