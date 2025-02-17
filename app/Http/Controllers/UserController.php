@@ -29,7 +29,9 @@ class UserController extends Controller
     {
         $users = User::with([
             'affectation' => function ($query) {
-                $query->whereNull('date_desaffectation');
+                $query->whereNull('date_desaffectation')
+                    ->latest('date_affectation') // Trie par date d'affectation la plus récente
+                    ->with('agence'); // Charge aussi l'agence;
             }
         ])
             ->with('role')
@@ -97,7 +99,7 @@ class UserController extends Controller
         }
 
         $contrats = Contrat::where('etat', 'validé')
-        // ->where('agence_id', $agence->id)
+            // ->where('agence_id', $agence->id)
             ->get();
 
         $sinistres = Prestation::all();
