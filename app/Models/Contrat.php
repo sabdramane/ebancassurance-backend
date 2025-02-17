@@ -12,7 +12,7 @@ class Contrat extends Model
     protected $fillable = [
             'id','numprojet','dateeffet','dateeche','datesaisie','duree','periodicite','differe','traite', 'numdossier',
             'etat','fraisacces','primetotale','produit_id','agence_id','client_id','rapprochement_id'
-            ,'contrat_travail','contrat_travail_ext','employeur','beneficiaire_id'
+            ,'contrat_travail','contrat_travail_ext','employeur','beneficiaire_id','numdossier'
     ];
 
     public function banque(){
