@@ -167,15 +167,22 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
+
         $request->validate([
+            'name' => 'required|string|max:255',
+            'password' => 'required|string|min:8|confirmed',
+            'role_id' => 'required|integer|exists:roles,id',
             'etat' => 'required|boolean',
         ]);
 
+        $user = User::find($id);
+
         $user->update($request->all());
         return response()->json([
-            'messge' => 'Mise à jour éffectuée'
+            'messge' => 'Mise à jour éffectuée',
+            'data' => $user
         ]);
     }
 
@@ -188,5 +195,48 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Type de prestation supprimé'
         ]);
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        // Validation des données
+        $request->validate([
+            'current' => 'required|string', // Mot de passe actuel
+            'password' => 'required|string|min:8|confirmed', // Nouveau mot de passe avec confirmation
+        ]);
+
+        // Récupération de l'utilisateur par son ID
+        $user = User::find($id);
+
+        // Vérification que l'utilisateur existe
+        if (!$user) {
+            return response()->json([
+                'message' => 'Utilisateur non trouvé.',
+            ], 404); // 404 : Not Found
+        }
+
+        // Vérification du mot de passe actuel
+        if (!Hash::check($request->current, $user->password)) {
+            return response()->json([
+                'message' => 'Le mot de passe actuel est incorrect.',
+                'errors' => [
+                    'current' => ['Le mot de passe actuel ne correspond pas.']
+                ],
+            ], 422); 
+        }
+
+        // Mise à jour du mot de passe
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Réponse de succès
+        return response()->json([
+            'message' => 'Le mot de passe a été mis à jour avec succès.',
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ],
+        ], 200); // 200 : OK
     }
 }
