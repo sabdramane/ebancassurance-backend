@@ -140,3 +140,4 @@ Route::get('/pieces-jointes-prestation/download/{libelle}', [PieceJointeControll
 Route::get('/cloture-prestation/{prestation_id}', [PrestationController::class, 'cloturePrestation']);
 Route::post('/rapprochement-verification', [RapprochementController::class, 'verifRapprochement']);
 //Route::post('/rapprochement-verification', [RapprochementController::class, 'verifRapprochement']);
+Route::put('/users/update-password/{id}', [UserController::class, 'updatePassword']);

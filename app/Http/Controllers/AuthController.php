@@ -61,6 +61,7 @@ class AuthController extends Controller
                 'status' => true,
                 'message' => 'User Logged In Successfully',
                 'token' => $user->createToken("API_TOKEN")->plainTextToken,
+                'user_id' => $user->id,
                 'role' => $user->role,
                 'name' => $user->name,
                 'etat' => $user->etat

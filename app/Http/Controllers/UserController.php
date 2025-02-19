@@ -151,9 +151,23 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
-        return new UserResource($user);
+        // Récupère l'utilisateur avec ses relations
+        $user = User::with([
+            'affectation' => function ($query) {
+                $query->whereNull('date_desaffectation') 
+                    ->latest('date_affectation') 
+                    ->with('agence'); 
+            },
+            'role',
+        ])->findOrFail($id); 
+
+        
+        return response()->json([
+            "success" => true,
+            "data" => $user,
+        ]);
     }
 
     /**
@@ -212,7 +226,7 @@ class UserController extends Controller
         if (!$user) {
             return response()->json([
                 'message' => 'Utilisateur non trouvé.',
-            ], 404); // 404 : Not Found
+            ], 404); 
         }
 
         // Vérification du mot de passe actuel
@@ -222,14 +236,14 @@ class UserController extends Controller
                 'errors' => [
                     'current' => ['Le mot de passe actuel ne correspond pas.']
                 ],
-            ], 422); 
+            ], 422);
         }
 
         // Mise à jour du mot de passe
         $user->password = Hash::make($request->password);
         $user->save();
 
-        // Réponse de succès
+
         return response()->json([
             'message' => 'Le mot de passe a été mis à jour avec succès.',
             'data' => [
@@ -237,6 +251,6 @@ class UserController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
             ],
-        ], 200); // 200 : OK
+        ], 200);
     }
 }
