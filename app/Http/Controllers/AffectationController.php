@@ -120,7 +120,7 @@ class AffectationController extends Controller
                 "message" => "Affectation non trouvée.",
             ], 404);
         }
-       
+
 
         $validator = Validator::make($request->all(), $this->rules);
 

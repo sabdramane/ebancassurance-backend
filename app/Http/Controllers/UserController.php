@@ -156,14 +156,14 @@ class UserController extends Controller
         // Récupère l'utilisateur avec ses relations
         $user = User::with([
             'affectation' => function ($query) {
-                $query->whereNull('date_desaffectation') 
-                    ->latest('date_affectation') 
-                    ->with('agence'); 
+                $query->whereNull('date_desaffectation')
+                    ->latest('date_affectation')
+                    ->with('agence');
             },
             'role',
-        ])->findOrFail($id); 
+        ])->findOrFail($id);
 
-        
+
         return response()->json([
             "success" => true,
             "data" => $user,
@@ -226,7 +226,7 @@ class UserController extends Controller
         if (!$user) {
             return response()->json([
                 'message' => 'Utilisateur non trouvé.',
-            ], 404); 
+            ], 404);
         }
 
         // Vérification du mot de passe actuel
