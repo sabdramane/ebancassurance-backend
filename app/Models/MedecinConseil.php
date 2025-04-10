@@ -10,6 +10,11 @@ class MedecinConseil extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','nom','prenom','statut','datenomination','datefin'
+        'id',
+        'nom',
+        'prenom',
+        'statut',
+        'datenomination',
+        'datefin'
     ];
 }

@@ -9,6 +9,9 @@ class QuestionnaireMedical extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id','codequestion','libelle','produit_id'
+        'id',
+        'codequestion',
+        'libelle',
+        'produit_id'
     ];
 }

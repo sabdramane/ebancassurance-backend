@@ -1,19 +1,21 @@
 <div style="display: flex; align-items: center; width: 100%;">
     <img src="images/logo_coris_v.PNG" alt="Logo" style="margin-right: 10px;margin-top:-30px" />
-    <p style="margin: 0; flex-grow: 1; text-align: right;margin-top:-20px;font-size:12px">2023-04/MEFP/SG/DGTCP/DA/CORIS-VIE</p>
+    <p style="margin: 0; flex-grow: 1; text-align: right;margin-top:-20px;font-size:12px">
+        2023-04/MEFP/SG/DGTCP/DA/CORIS-VIE</p>
 </div>
 <div style="background-color:darkgray;margin-top:-10px">
     <h4 style="text-align: center">ATTESTATION D'ASSURANCE N° {{$contrat->numprojet}}</h4>
 </div>
 <div style="margin-top: -20px">
-    <p style="margin-top: -2px;text-align:center"> Banque : <span style="font-weight: bold">{{ $contrat->banque->libebanque}}</span></p>
-</div> 
+    <p style="margin-top: -2px;text-align:center"> Banque : <span
+            style="font-weight: bold">{{ $contrat->banque->libebanque}}</span></p>
+</div>
 <div style="margin-top: -30px">
     <p> Agence : <span style="font-weight: bold">{{ $contrat->agence->libeagence}}</span>
         <span style="margin-left:100px">
             Agent : <span style="font-weight: bold">{{ $contrat->user->name}}</span>
         </span>
-    </p> 
+    </p>
     <br>
 </div>
 <div style="margin-top:-35px;border: 1px solid">
@@ -42,7 +44,7 @@
                 </td>
                 <td style="width: 200px" colspan="2">
                     {{ $contrat->client->nom}}
-                </td>        
+                </td>
             </tr>
             <tr>
                 <td style="width: 150px">
@@ -83,7 +85,7 @@
                     Personne à prévenir :
                 </td>
                 <td style="width: 200px">
-                    OUEDRAOGO Siaka
+                    {{ $contrat->client->person_nom}} {{ $contrat->client->person_prenom}}
                 </td>
             </tr>
             <tr>
@@ -97,7 +99,7 @@
                     Contact personne à prévenir
                 </td>
                 <td style="width: 100px">
-                    58696312
+                    {{ $contrat->client->person_tel}}
                 </td>
             </tr>
         </table>
@@ -135,7 +137,7 @@
                 </td>
                 <td style="width: 200px">
                     {{ $contrat->differe}} mois
-                </td>        
+                </td>
             </tr>
             <tr>
                 <td style="width: 150px">
@@ -145,7 +147,7 @@
                     {{ $contrat->type_pret}}
                 </td>
                 <td>
-                    Date de la 1ère échéance : 
+                    Date de la 1ère échéance :
                 </td>
                 <td>
                     {{ $contrat->dateeffet}}
@@ -177,27 +179,27 @@
                 </td>
                 <td style="width: 100px">
                     @if ($contrat->beogo == 0)
-                         NON
+                        NON
                     @else
                         OUI
-                     @endif
+                    @endif
                 </td>
             </tr>
             <tr>
                 <td style="width: 160px">
                     Perte d'emploi :
                 </td>
-                <td style="width: 200px" >
+                <td style="width: 200px">
                     @if ($contrat->prime_perte_emploi == 0)
                         NON
                     @else
                         OUI
-                     @endif
+                    @endif
                 </td>
                 <td style="width: 160px">
                     Montant de la traite :
                 </td>
-                <td style="width: 200px" >
+                <td style="width: 200px">
                     {{ formatPrixBf($contrat->montant_traite) }}
                 </td>
             </tr>
@@ -218,7 +220,7 @@
                     @if ($contrat_quest_tailles != null)
                         {{ $contrat_quest_tailles->valeur }}
                     @endif
-                   
+
                 </td>
                 <td style="width: 150px">
                     Quel est votre (Kg) :
@@ -245,22 +247,22 @@
                 </td>
             </tr>
             @foreach ($contrat_quests as $quest)
-            <tr>
-                <td style="width: 300px;border: 1px solid black;border-collapse: collapse;">
-                    {{ $quest->libelle}}
-                </td>
-                <td style="width: 92px;border: 1px solid black;border-collapse: collapse;text-align:center">
-                    @if ($quest->valeur == 'false' )
-                        NON
-                    @else
-                        OUI
-                    @endif
-                </td>
-                <td style="width: 300px;border: 1px solid black;border-collapse: collapse;">
-                    {{ $quest->motif}}
-                </td>
-            </tr>
-            @endforeach 
+                <tr>
+                    <td style="width: 300px;border: 1px solid black;border-collapse: collapse;">
+                        {{ $quest->libelle}}
+                    </td>
+                    <td style="width: 92px;border: 1px solid black;border-collapse: collapse;text-align:center">
+                        @if ($quest->valeur == 'false')
+                            NON
+                        @else
+                            OUI
+                        @endif
+                    </td>
+                    <td style="width: 300px;border: 1px solid black;border-collapse: collapse;">
+                        {{ $quest->motif}}
+                    </td>
+                </tr>
+            @endforeach
         </table>
     </div>
 </div>
@@ -281,7 +283,7 @@
                     Prime différé :
                 </td>
                 <td style="width: 100px">
-                   
+
                 </td>
             </tr>
             <tr>
@@ -300,7 +302,7 @@
                     @if ($contrat->prime_beogo != 0)
                         {{ formatPrixBf($contrat->prime_beogo) }}
                     @endif
-                </td>        
+                </td>
             </tr>
             <tr>
                 <td style="width: 150px">
@@ -312,7 +314,7 @@
                     @endif
                 </td>
                 <td>
-                    Coût de Police : 
+                    Coût de Police :
                 </td>
                 <td>
                     {{ formatPrixBf($contrat->cout_police) }}
@@ -330,12 +332,14 @@
     </div>
 </div>
 <div style="margin-top:-20px">
-    <h4 style="text-align:right;font-weight:12px">Fait à Ouagadougou,  le <span> {{ $contrat->datesaisie }}</span> </h4>
+    <h4 style="text-align:right;font-weight:12px">Fait à Ouagadougou, le <span> {{ $contrat->datesaisie }}</span> </h4>
 </div>
-<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid transparent;margin-top:-25px">
+<div
+    style="display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid transparent;margin-top:-25px">
     <div style="flex: 1; text-align: left;margin-top:0px">
         <h4 style="margin: 0;">Signature de l'assuré</h4>
-        <span style="font-size: 10px;font-style:italic">Signature précédée de la mention manuscrite "Lu et Approuvé"</span>
+        <span style="font-size: 10px;font-style:italic">Signature précédée de la mention manuscrite "Lu et
+            Approuvé"</span>
     </div>
     <div style="flex: 1; text-align: right;margin-top:-30px">
         <h4 style="margin: 0;">Signature Agence</h4>
@@ -344,10 +348,10 @@
 <div style="margin-top:80px">
     <hr>
     <h6 style="text-align: center;margin-top:-5px">Coris Assurances Vie Burkina</h6>
-    <h6 style="text-align: center;margin-top:-25px">Entreprise régie par le code des Assurances, Société anonyme avec Conseil d'administration au capital de 5 000 000 FCFA entièrement libéré</h6>
-    <h6 style="text-align: center;margin-top:-25px">RCCM: BF OUA 2021 B 13161 - IFU 00053466L - Siège social : 981, Avenue LOUDUN, Immeuble Coris Bourse, 01 BP 6092 Ouagadougou 01</h6>
-    <h6 style="text-align: center;margin-top:-25px">Tél: 25 39 18 98/Fax: 25 33 22 54 - Compte N° 19338424101-65 Coris Bank International - www.coris-assurances.com-</h6>
+    <h6 style="text-align: center;margin-top:-25px">Entreprise régie par le code des Assurances, Société anonyme avec
+        Conseil d'administration au capital de 5 000 000 FCFA entièrement libéré</h6>
+    <h6 style="text-align: center;margin-top:-25px">RCCM: BF OUA 2021 B 13161 - IFU 00053466L - Siège social : 981,
+        Avenue LOUDUN, Immeuble Coris Bourse, 01 BP 6092 Ouagadougou 01</h6>
+    <h6 style="text-align: center;margin-top:-25px">Tél: 25 39 18 98/Fax: 25 33 22 54 - Compte N° 19338424101-65 Coris
+        Bank International - www.coris-assurances.com-</h6>
 </div>
-
-
-

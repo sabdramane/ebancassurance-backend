@@ -10,6 +10,10 @@ class Garantie extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','codegara','libegara','descgara','tarif_id'
+        'id',
+        'codegara',
+        'libegara',
+        'descgara',
+        'tarif_id'
     ];
 }

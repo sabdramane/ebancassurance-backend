@@ -10,6 +10,11 @@ class ContratQuestionnaire extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','valeur','motif','datesurvenance','contrat_id','questionnaire_medical_id'
+        'id',
+        'valeur',
+        'motif',
+        'datesurvenance',
+        'contrat_id',
+        'questionnaire_medical_id'
     ];
 }

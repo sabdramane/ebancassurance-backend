@@ -10,14 +10,23 @@ class Agence extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','codeagence','libeagence','abrevagence','adresse','contact','banque_id','ville_id'
+        'id',
+        'codeagence',
+        'libeagence',
+        'abrevagence',
+        'adresse',
+        'contact',
+        'banque_id',
+        'ville_id'
     ];
 
-    public function banque(){
+    public function banque()
+    {
         return $this->belongsto(Banque::class);
     }
 
-    public function ville(){
+    public function ville()
+    {
         return $this->belongsto(Ville::class);
     }
 

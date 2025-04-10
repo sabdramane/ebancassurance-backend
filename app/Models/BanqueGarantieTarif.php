@@ -9,17 +9,21 @@ class BanqueGarantieTarif extends Model
 {
     use HasFactory;
 
-    public function garantie(){
+    public function garantie()
+    {
         return $this->belongsto(Garantie::class);
     }
-    public function produit(){
+    public function produit()
+    {
         return $this->belongsto(Produit::class);
     }
 
-    public function banque(){
+    public function banque()
+    {
         return $this->belongsto(Banque::class);
     }
-    public function tarif(){
+    public function tarif()
+    {
         return $this->belongsto(Tarif::class);
     }
 }

@@ -10,6 +10,11 @@ class Beneficiaire extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','beneficiaire_nom','telephone','adresse','ville','typebeneficiaire'
+        'id',
+        'beneficiaire_nom',
+        'telephone',
+        'adresse',
+        'ville',
+        'typebeneficiaire'
     ];
 }

@@ -10,6 +10,9 @@ class TrancheCapital extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','libelle','capital_min','capital_max'
+        'id',
+        'libelle',
+        'capital_min',
+        'capital_max'
     ];
 }

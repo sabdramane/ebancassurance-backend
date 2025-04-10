@@ -10,6 +10,7 @@ class Ville extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','libeville',
+        'id',
+        'libeville',
     ];
 }

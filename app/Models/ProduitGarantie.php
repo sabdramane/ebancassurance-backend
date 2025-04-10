@@ -9,11 +9,13 @@ class ProduitGarantie extends Model
 {
     use HasFactory;
 
-    public function produit(){
+    public function produit()
+    {
         return $this->belongsto(Banque::class);
     }
 
-    public function garantie(){
+    public function garantie()
+    {
         return $this->belongsto(Ville::class);
     }
 }

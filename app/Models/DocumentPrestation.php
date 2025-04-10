@@ -10,6 +10,8 @@ class DocumentPrestation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','libelle','obligatoire'
+        'id',
+        'libelle',
+        'obligatoire'
     ];
 }

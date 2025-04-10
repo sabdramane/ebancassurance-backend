@@ -10,6 +10,9 @@ class Tarif extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','codetarif','libetarif','typetarif'
+        'id',
+        'codetarif',
+        'libetarif',
+        'typetarif'
     ];
 }

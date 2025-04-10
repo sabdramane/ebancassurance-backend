@@ -10,6 +10,9 @@ class TrancheAge extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','libelle','age_min','age_max'
+        'id',
+        'libelle',
+        'age_min',
+        'age_max'
     ];
 }

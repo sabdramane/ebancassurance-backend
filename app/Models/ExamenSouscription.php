@@ -10,6 +10,10 @@ class ExamenSouscription extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','categorie_produit_id','examen_id','tranche_age_id','tranche_capital_id'
+        'id',
+        'categorie_produit_id',
+        'examen_id',
+        'tranche_age_id',
+        'tranche_capital_id'
     ];
 }

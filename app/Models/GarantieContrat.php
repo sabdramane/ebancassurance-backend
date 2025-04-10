@@ -10,6 +10,11 @@ class GarantieContrat extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','prime','capital','garantie_id','contrat_id','produit_id'
+        'id',
+        'prime',
+        'capital',
+        'garantie_id',
+        'contrat_id',
+        'produit_id'
     ];
 }

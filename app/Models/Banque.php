@@ -10,6 +10,11 @@ class Banque extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','codebanque','libebanque','siglebanque','adresse','contact'
+        'id',
+        'codebanque',
+        'libebanque',
+        'siglebanque',
+        'adresse',
+        'contact'
     ];
 }

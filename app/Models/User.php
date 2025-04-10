@@ -45,11 +45,12 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function role(){
+    public function role()
+    {
         return $this->belongsto(Role::class);
     }
 
-     /**
+    /**
      * Relation : Un utilisateur a une affectation.
      * La date de désaffectation est définie comme `null` par défaut.
      *
@@ -58,7 +59,7 @@ class User extends Authenticatable
     public function affectation()
     {
         return $this->hasOne(AgenceUser::class, 'user_id')->with('agence');
-           // ->whereNull('date_desaffectation'); // Filtre pour obtenir uniquement les affectations actives
+        // ->whereNull('date_desaffectation'); // Filtre pour obtenir uniquement les affectations actives
     }
 
     /**

@@ -10,6 +10,11 @@ class Rapprochement extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','daterapproch','datecompt','montant','datedebut','datefin'
+        'id',
+        'daterapproch',
+        'datecompt',
+        'montant',
+        'datedebut',
+        'datefin'
     ];
 }

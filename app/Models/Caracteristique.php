@@ -10,6 +10,10 @@ class Caracteristique extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','capital','duree','traite','garantie_id'
+        'id',
+        'capital',
+        'duree',
+        'traite',
+        'garantie_id'
     ];
 }

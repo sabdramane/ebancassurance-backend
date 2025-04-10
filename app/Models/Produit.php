@@ -10,7 +10,11 @@ class Produit extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id','codeprod','libeprod','descprod','categorie_produit_id'
+        'id',
+        'codeprod',
+        'libeprod',
+        'descprod',
+        'categorie_produit_id'
     ];
 
     public function produitgaranties()

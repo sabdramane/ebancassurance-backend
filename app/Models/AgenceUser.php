@@ -9,22 +9,24 @@ class AgenceUser extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'agence_id', 
+        'agence_id',
         'user_id',
         'date_affectation'
     ];
 
-    public function agence() {
+    public function agence()
+    {
         return $this->belongsTo('App\Models\Agence');
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo('App\Models\User');
     }
 
 
     protected $casts = [
-        'date_affectation'=>'date:d-m-Y'
+        'date_affectation' => 'date:d-m-Y'
     ];
 
 }

@@ -9,11 +9,13 @@ class BanqueProduit extends Model
 {
     use HasFactory;
 
-    public function produit(){
+    public function produit()
+    {
         return $this->belongsto(Produit::class);
     }
 
-    public function banque(){
+    public function banque()
+    {
         return $this->belongsto(Banque::class);
     }
 }
