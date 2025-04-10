@@ -27,6 +27,9 @@ return new class extends Migration
             $table->string("boitepostale")->nullable();
             $table->string("adresse")->nullable();
             $table->string("ville")->nullable();
+            $table->string("person_nom")->nullable();
+            $table->string("person_prenom")->nullable();
+            $table->string("person_telephone")->nullable();
             $table->timestamps();
         });
     }
