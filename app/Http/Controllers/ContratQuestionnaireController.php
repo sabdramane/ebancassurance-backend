@@ -10,6 +10,11 @@ use App\Models\QuestionnaireMedical;
 
 class ContratQuestionnaireController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -31,13 +36,13 @@ class ContratQuestionnaireController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->taille != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"taille")
-                                                    ->first();
-            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('contrat_id',$request->contrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->taille != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "taille")
+                ->first();
+            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('contrat_id', $request->contrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new ContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->taille;
@@ -45,13 +50,13 @@ class ContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        if($request->poids != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"poids")
-                                                    ->first();
-            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('contrat_id',$request->contrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->poids != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "poids")
+                ->first();
+            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('contrat_id', $request->contrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new ContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->poids;
@@ -59,13 +64,13 @@ class ContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        if($request->arret_travail != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"arret_travail")
-                                                    ->first();
-            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('contrat_id',$request->contrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->arret_travail != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "arret_travail")
+                ->first();
+            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('contrat_id', $request->contrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new ContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->arret_travail;
@@ -75,13 +80,13 @@ class ContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        if($request->accident != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"accident")
-                                                    ->first();
-            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('contrat_id',$request->contrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->accident != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "accident")
+                ->first();
+            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('contrat_id', $request->contrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new ContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->accident;
@@ -92,13 +97,13 @@ class ContratQuestionnaireController extends Controller
             $contrat_questionnaire->save();
         }
 
-        if($request->maladie_infirmite != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"maladie_infirmite")
-                                                    ->first();
-            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('contrat_id',$request->contrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->maladie_infirmite != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "maladie_infirmite")
+                ->first();
+            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('contrat_id', $request->contrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new ContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->maladie_infirmite;
@@ -109,13 +114,13 @@ class ContratQuestionnaireController extends Controller
             $contrat_questionnaire->save();
         }
 
-        if($request->traitement_piqure != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"traitement_piqure")
-                                                    ->first();
-            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('contrat_id',$request->contrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->traitement_piqure != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "traitement_piqure")
+                ->first();
+            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('contrat_id', $request->contrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new ContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->traitement_piqure;
@@ -125,13 +130,13 @@ class ContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        if($request->perfusion != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"perfusion")
-                                                    ->first();
-            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('contrat_id',$request->contrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->perfusion != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "perfusion")
+                ->first();
+            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('contrat_id', $request->contrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new ContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->perfusion;
@@ -141,14 +146,14 @@ class ContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        
-        if($request->hepatite_sida != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"hepatite_sida")
-                                                    ->first();
-            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('contrat_id',$request->contrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+
+        if ($request->hepatite_sida != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "hepatite_sida")
+                ->first();
+            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('contrat_id', $request->contrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new ContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->hepatite_sida;
@@ -159,13 +164,13 @@ class ContratQuestionnaireController extends Controller
             $contrat_questionnaire->save();
         }
 
-        if($request->intervention != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"intervention")
-                                                    ->first();
-            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('contrat_id',$request->contrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->intervention != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "intervention")
+                ->first();
+            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('contrat_id', $request->contrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new ContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->intervention;
@@ -175,13 +180,13 @@ class ContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        if($request->meningite_maladie != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"meningite_maladie")
-                                                    ->first();
-            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('contrat_id',$request->contrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->meningite_maladie != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "meningite_maladie")
+                ->first();
+            $contrat_questionnaire = ContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('contrat_id', $request->contrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new ContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->meningite_maladie;
@@ -195,10 +200,10 @@ class ContratQuestionnaireController extends Controller
         $contrat = Contrat::find($request->contrat_id);
         return response()->json([
             "success" => true,
-            "contrat" =>$contrat->load(['client','beneficiaire'])
+            "contrat" => $contrat->load(['client', 'beneficiaire'])
         ]);
 
-        
+
     }
 
     /**

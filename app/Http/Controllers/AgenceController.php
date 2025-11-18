@@ -14,9 +14,13 @@ class AgenceController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     public function index()
     {
-        return Agence::with('ville','banque')->get();
+        return Agence::with('ville', 'banque')->get();
     }
 
     /**
@@ -71,12 +75,12 @@ class AgenceController extends Controller
 
         //$agence->update($request->validated());
         return response()->json([
-            'messge' => 'Mise à jour éffectuée'.$agence->abrevagence
+            'messge' => 'Mise à jour éffectuée' . $agence->abrevagence
         ]);
     }
-    public function findAllByParams($libelleparams,$params_id)
+    public function findAllByParams($libelleparams, $params_id)
     {
-        return Agence::where($libelleparams,'=',$params_id)->with('ville')->get();
+        return Agence::where($libelleparams, '=', $params_id)->with('ville')->get();
     }
 
     /**

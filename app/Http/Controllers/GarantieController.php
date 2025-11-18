@@ -10,12 +10,16 @@ use App\Http\Requests\Garantie\GarantieUpdateRequest;
 
 class GarantieController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Garantie::orderBy('id','desc')->get();
+        return Garantie::orderBy('id', 'desc')->get();
     }
 
     /**
@@ -42,7 +46,7 @@ class GarantieController extends Controller
      */
     public function show(string $id)
     {
-        return Garantie::where('id',$id)->first();
+        return Garantie::where('id', $id)->first();
     }
 
     /**
@@ -56,7 +60,7 @@ class GarantieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(GarantieUpdateRequest $request,$id)
+    public function update(GarantieUpdateRequest $request, $id)
     {
         $garantie = Garantie::find($id);
         $garantie->codegara = $request->codegara;
@@ -72,7 +76,7 @@ class GarantieController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-    {   
+    {
         $garantie = Garantie::find($id);
         $garantie->delete();
         return response()->json([

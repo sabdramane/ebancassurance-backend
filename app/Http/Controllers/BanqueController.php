@@ -9,12 +9,16 @@ use App\Http\Requests\banque\BanqueUpdateRequest;
 
 class BanqueController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Banque::orderBy('id','desc')->get();
+        return Banque::orderBy('id', 'desc')->get();
     }
 
     /**
@@ -22,17 +26,17 @@ class BanqueController extends Controller
      */
     public function create()
     {
-       return "OK";
+        return "OK";
     }
 
-    public function findAllByParams($libelleparams,$params_id)
+    public function findAllByParams($libelleparams, $params_id)
     {
-        return BanqueGarantieTarif::where($libelleparams,'=',$params_id)
-                                    ->with('produit')
-                                    ->with('banque')
-                                    ->with('garantie')
-                                    ->with('tarif')
-                                    ->get();
+        return BanqueGarantieTarif::where($libelleparams, '=', $params_id)
+            ->with('produit')
+            ->with('banque')
+            ->with('garantie')
+            ->with('tarif')
+            ->get();
     }
 
     /**
@@ -51,7 +55,7 @@ class BanqueController extends Controller
      */
     public function show(string $id)
     {
-        return Banque::where('id',$id)->first();
+        return Banque::where('id', $id)->first();
     }
 
     /**
@@ -67,7 +71,7 @@ class BanqueController extends Controller
      */
     public function update(BanqueUpdateRequest $request, Banque $banque)
     {
-        
+
         $banque->update($request->validated());
         return response()->json([
             'messge' => 'Mise à jour éffectuée'

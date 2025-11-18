@@ -10,12 +10,16 @@ use App\Http\Requests\produit\ProduitPostRequest;
 
 class ProduitGarantieController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       return Produit::all();
+        return Produit::all();
     }
 
     /**
@@ -36,7 +40,7 @@ class ProduitGarantieController extends Controller
         $produit->libeprod = $request->libeprod;
         $produit->descprod = $request->descprod;
         $produit->save();
-        
+
         $garanties_principales = $request->garantie_principal_id;
         $garanties_optionnelles = $request->garantie_optionnelle_id;
 
@@ -52,7 +56,7 @@ class ProduitGarantieController extends Controller
         if ($garanties_optionnelles != null) {
             foreach ($garanties_optionnelles as $garanties_optionnelle) {
                 $garantie = Garantie::find($garanties_optionnelle);
-    
+
                 $produit_garantie = new ProduitGarantie();
                 $produit_garantie->produit_id = $produit->id;
                 $produit_garantie->garantie_id = $garantie->id;
@@ -60,8 +64,8 @@ class ProduitGarantieController extends Controller
                 $produit_garantie->save();
             }
         }
-        
-        
+
+
     }
 
     /**
@@ -69,7 +73,7 @@ class ProduitGarantieController extends Controller
      */
     public function show(string $id)
     {
-        return ProduitGarantie::where('id',$id)->with('produit','garantie')->get();
+        return ProduitGarantie::where('id', $id)->with('produit', 'garantie')->get();
     }
 
     /**

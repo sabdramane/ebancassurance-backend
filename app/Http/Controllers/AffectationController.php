@@ -111,7 +111,7 @@ class AffectationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $affectation = AgenceUser::where('user_id',$id)->latest()->first();
+        $affectation = AgenceUser::where('user_id', $id)->latest()->first();
         //$affectation = AgenceUser::find($affectation->id);
 
         if (!$affectation) {

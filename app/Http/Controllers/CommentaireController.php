@@ -22,7 +22,7 @@ class CommentaireController extends Controller
     {
         //
     }
-     /**
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -59,15 +59,15 @@ class CommentaireController extends Controller
      */
     public function edit(string $id)
     {
-        
+
     }
 
     public function getCommentaires($prestation_id)
     {
-        $commentaires = Commentaire::where('prestation_id',$prestation_id)->get();
+        $commentaires = Commentaire::where('prestation_id', $prestation_id)->get();
         return response()->json([
             "success" => true,
-            "commentaires" =>$commentaires,
+            "commentaires" => $commentaires,
         ]);
     }
 
@@ -76,7 +76,7 @@ class CommentaireController extends Controller
      */
     public function update(Request $request, string $id)
     {
-     //
+        //
     }
 
     /**

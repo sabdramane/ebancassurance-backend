@@ -27,22 +27,22 @@ class ClientController extends Controller
 
     public function getInfosClient(Request $request)
     {
-        $client = Client::where('codeagence',$request->codeagence)
-                                    ->where('numcompte',$request->numcompte)
-                                    ->where('clerib',$request->clerib)
-                                    ->first();
+        $client = Client::where('codeagence', $request->codeagence)
+            ->where('numcompte', $request->numcompte)
+            ->where('clerib', $request->clerib)
+            ->first();
 
         $precontrat = new PreContrat();
         $precontrat->save();
 
-        if($client != null){
+        if ($client != null) {
             $client->precontrat_id = $precontrat->id;
             return $client;
-        }else{
-            $bdbanque_clients = BdbanqueClient::where('codeagence',$request->codeagence)
-                                            ->where('numcompte',$request->numcompte)
-                                            ->where('clerib',$request->clerib)
-                                            ->first();
+        } else {
+            $bdbanque_clients = BdbanqueClient::where('codeagence', $request->codeagence)
+                ->where('numcompte', $request->numcompte)
+                ->where('clerib', $request->clerib)
+                ->first();
             if ($bdbanque_clients != null) {
                 $bdbanque_clients->precontrat_id = $precontrat->id;
                 return $bdbanque_clients;
@@ -52,7 +52,7 @@ class ClientController extends Controller
         $client = new Client();
         $client->precontrat_id = $precontrat->id;
         return $client;
-        
+
     }
     /**
      * Show the form for creating a new resource.
@@ -67,14 +67,14 @@ class ClientController extends Controller
      */
     public function store(ClientPostRequest $request)
     {
-        $client = Client::where("codeagence",$request->codeagence)
-                            ->where("numcompte",$request->numcompte)
-                            ->where("clerib",$request->clerib)
-                            ->first();
-        if($client == null){
-            $client = Client::create($request->all());    
-        }else{
-             $client->update($request->all());    
+        $client = Client::where("codeagence", $request->codeagence)
+            ->where("numcompte", $request->numcompte)
+            ->where("clerib", $request->clerib)
+            ->first();
+        if ($client == null) {
+            $client = Client::create($request->all());
+        } else {
+            $client->update($request->all());
         }
 
         if ($files = $request->file('document_piece_identite')) {
@@ -101,7 +101,7 @@ class ClientController extends Controller
      */
     public function edit(string $id)
     {
-        
+
     }
     public function getClientStepEditContrat(string $id)
     {
@@ -111,7 +111,7 @@ class ClientController extends Controller
 
         return response()->json([
             "success" => true,
-            'client'=>$client
+            'client' => $client
         ]);
     }
 
@@ -121,7 +121,7 @@ class ClientController extends Controller
     public function update(Request $request, string $id)
     {
         $client = Client::find($id);
-        
+
         $client->update($request->all());
 
         if ($files = $request->file('document_piece_identite')) {
@@ -135,7 +135,7 @@ class ClientController extends Controller
 
         return response()->json([
             "success" => true,
-            'contrat'=>$request
+            'contrat' => $request
         ]);
     }
 
@@ -147,9 +147,10 @@ class ClientController extends Controller
         //
     }
 
-    public function updateClient(Request $request) {
+    public function updateClient(Request $request)
+    {
         $client = Client::find($request->id);
-        
+
         $client->update($request->all());
 
         if ($files = $request->file('document_piece_identite')) {
@@ -163,7 +164,7 @@ class ClientController extends Controller
 
         return response()->json([
             "success" => true,
-            'contrat'=>$contrat->load(['beneficiaire'])
+            'contrat' => $contrat->load(['beneficiaire'])
         ]);
     }
 }

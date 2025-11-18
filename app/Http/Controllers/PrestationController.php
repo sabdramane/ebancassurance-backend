@@ -32,7 +32,7 @@ class PrestationController extends Controller
 
     public function getRistourne()
     {
-        $ristournes = Prestation::where('type_prestation_id',4)->orderBy('id', 'desc')->get();
+        $ristournes = Prestation::where('type_prestation_id', 4)->orderBy('id', 'desc')->get();
         return response()->json([
             "success" => true,
             "ristournes" => $ristournes->load(['client', 'typePrestation']),
@@ -146,7 +146,7 @@ class PrestationController extends Controller
         ]);
     }
 
-    public function storeRistourne(Request $request) 
+    public function storeRistourne(Request $request)
     {
         $client = Client::where('codeagence', $request->codeagence)
             ->where('numcompte', $request->numcompte)
@@ -343,7 +343,7 @@ class PrestationController extends Controller
                 $client->email = $bdbanque_clients->email;
                 $client->save();
             }
-        }else{
+        } else {
             $client->nom = $client->nom;
             $client->prenom = $client->prenom;
             $client->save();
@@ -416,7 +416,7 @@ class PrestationController extends Controller
         $filepath = public_path('storage/imports/prestations/documents/' . $filename);
 
         if (file_exists($filepath)) {
-            $mimeType = mime_content_type($filepath); 
+            $mimeType = mime_content_type($filepath);
 
             // Liste des types MIME pris en charge
             $allowedMimeTypes = [

@@ -21,7 +21,7 @@ class PieceJointeController extends Controller
     {
         //
     }
-     /**
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -34,14 +34,14 @@ class PieceJointeController extends Controller
      */
     public function store(PieceJointeRequest $request)
     {
-    
+
         if ($files = $request->file('fichier_joint')) {
             $piecejointe = new PieceJointe();
 
             $extension_fichier = $request->fichier_joint->getClientOriginalExtension();
             $nom_fichier = $request->fichier_joint->hashName();
             $fichier = $request->fichier_joint->move("storage/imports/prestations/documents/", $nom_fichier);
-            
+
             $piecejointe->nom_document = $request->nom_document;
             $piecejointe->prestation_id = $request->prestation_id;
             $piecejointe->fichier_joint = $nom_fichier;
@@ -67,18 +67,18 @@ class PieceJointeController extends Controller
 
     public function getPieceJointes($prestation_id)
     {
-        $piecejointes = PieceJointe::where('prestation_id',$prestation_id)->get();
+        $piecejointes = PieceJointe::where('prestation_id', $prestation_id)->get();
         return response()->json([
             "success" => true,
-            "piecejointes" =>$piecejointes,
-        ]);    
+            "piecejointes" => $piecejointes,
+        ]);
     }
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        
+
     }
 
     /**
@@ -86,7 +86,7 @@ class PieceJointeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-     //
+        //
     }
 
     /**
@@ -104,7 +104,7 @@ class PieceJointeController extends Controller
         $filepath = public_path('storage/imports/prestations/documents/' . $filename);
 
         if (file_exists($filepath)) {
-            $mimeType = mime_content_type($filepath); 
+            $mimeType = mime_content_type($filepath);
 
             // Liste des types MIME pris en charge
             $allowedMimeTypes = [

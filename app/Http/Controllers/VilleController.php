@@ -10,13 +10,17 @@ use Illuminate\Http\Request;
 
 class VilleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Ville::select('id','libeville')
-        ->orderBy('libeville')->get();
+        return Ville::select('id', 'libeville')
+            ->orderBy('libeville')->get();
     }
 
     /**
@@ -41,7 +45,7 @@ class VilleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Ville  $ville)
+    public function show(Ville $ville)
     {
         return new VilleResource($ville);
     }

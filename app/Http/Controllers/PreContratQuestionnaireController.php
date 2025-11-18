@@ -9,6 +9,10 @@ use App\Models\QuestionnaireMedical;
 
 class PreContratQuestionnaireController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
@@ -30,13 +34,13 @@ class PreContratQuestionnaireController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->taille != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"taille")
-                                                    ->first();
-            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('precontrat_id',$request->precontrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->taille != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "taille")
+                ->first();
+            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('precontrat_id', $request->precontrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new PreContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->taille;
@@ -44,13 +48,13 @@ class PreContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        if($request->poids != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"poids")
-                                                    ->first();
-            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('precontrat_id',$request->precontrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->poids != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "poids")
+                ->first();
+            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('precontrat_id', $request->precontrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new PreContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->poids;
@@ -58,13 +62,13 @@ class PreContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        if($request->arret_travail != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"arret_travail")
-                                                    ->first();
-            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('precontrat_id',$request->precontrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->arret_travail != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "arret_travail")
+                ->first();
+            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('precontrat_id', $request->precontrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new PreContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->arret_travail;
@@ -74,13 +78,13 @@ class PreContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        if($request->accident != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"accident")
-                                                    ->first();
-            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('precontrat_id',$request->precontrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->accident != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "accident")
+                ->first();
+            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('precontrat_id', $request->precontrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new PreContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->accident;
@@ -91,13 +95,13 @@ class PreContratQuestionnaireController extends Controller
             $contrat_questionnaire->save();
         }
 
-        if($request->maladie_infirmite != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"maladie_infirmite")
-                                                    ->first();
-            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('precontrat_id',$request->precontrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->maladie_infirmite != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "maladie_infirmite")
+                ->first();
+            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('precontrat_id', $request->precontrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new PreContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->maladie_infirmite;
@@ -108,13 +112,13 @@ class PreContratQuestionnaireController extends Controller
             $contrat_questionnaire->save();
         }
 
-        if($request->traitement_piqure != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"traitement_piqure")
-                                                    ->first();
-            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('precontrat_id',$request->precontrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->traitement_piqure != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "traitement_piqure")
+                ->first();
+            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('precontrat_id', $request->precontrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new PreContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->traitement_piqure;
@@ -124,13 +128,13 @@ class PreContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        if($request->perfusion != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"perfusion")
-                                                    ->first();
-            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('precontrat_id',$request->precontrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->perfusion != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "perfusion")
+                ->first();
+            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('precontrat_id', $request->precontrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new PreContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->perfusion;
@@ -140,14 +144,14 @@ class PreContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        
-        if($request->hepatite_sida != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"hepatite_sida")
-                                                    ->first();
-            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('precontrat_id',$request->precontrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+
+        if ($request->hepatite_sida != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "hepatite_sida")
+                ->first();
+            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('precontrat_id', $request->precontrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new PreContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->hepatite_sida;
@@ -158,13 +162,13 @@ class PreContratQuestionnaireController extends Controller
             $contrat_questionnaire->save();
         }
 
-        if($request->intervention != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"intervention")
-                                                    ->first();
-            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('precontrat_id',$request->precontrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->intervention != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "intervention")
+                ->first();
+            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('precontrat_id', $request->precontrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new PreContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->intervention;
@@ -174,13 +178,13 @@ class PreContratQuestionnaireController extends Controller
             $contrat_questionnaire->questionnaire_medical_id = $questionnaire->id;
             $contrat_questionnaire->save();
         }
-        if($request->meningite_maladie != ''){
-            $questionnaire = QuestionnaireMedical::where('codequestion',"meningite_maladie")
-                                                    ->first();
-            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id',$questionnaire->id)
-                                                    ->where('precontrat_id',$request->precontrat_id)
-                                                    ->first();
-            if($contrat_questionnaire == null){
+        if ($request->meningite_maladie != '') {
+            $questionnaire = QuestionnaireMedical::where('codequestion', "meningite_maladie")
+                ->first();
+            $contrat_questionnaire = PreContratQuestionnaire::where('questionnaire_medical_id', $questionnaire->id)
+                ->where('precontrat_id', $request->precontrat_id)
+                ->first();
+            if ($contrat_questionnaire == null) {
                 $contrat_questionnaire = new PreContratQuestionnaire();
             }
             $contrat_questionnaire->valeur = $request->meningite_maladie;
@@ -192,7 +196,7 @@ class PreContratQuestionnaireController extends Controller
         }
 
         return PreContrat::find($request->precontrat_id);
-        
+
     }
 
     /**

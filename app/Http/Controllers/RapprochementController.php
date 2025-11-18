@@ -13,6 +13,10 @@ use DB;
 
 class RapprochementController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("auth:sanctum");
+    }
     /**
      * Display a listing of the resource.
      */
@@ -21,7 +25,7 @@ class RapprochementController extends Controller
         $rapprochements = Rapprochement::all();
         return response()->json([
             "success" => true,
-            "rapprochements" =>$rapprochements,
+            "rapprochements" => $rapprochements,
         ]);
     }
 
@@ -38,15 +42,15 @@ class RapprochementController extends Controller
      */
     public function store(Request $request)
     {
-        if ($files = $request->file('fichier_rapprochement')){
+        if ($files = $request->file('fichier_rapprochement')) {
 
             $extension_fichier = $request->fichier_rapprochement->getClientOriginalExtension();
-            if(strcmp($extension_fichier,"xlsx") != 0){
+            if (strcmp($extension_fichier, "xlsx") != 0) {
                 return response()->json([
                     "success" => true,
-                    "message" =>"Erreur importation fichier non joint",
+                    "message" => "Erreur importation fichier non joint",
                 ]);
-            }else{
+            } else {
                 $montanttotal_fichier = 0;
                 $montantrapproche = 0;
                 $montant_non_rapproche = 0;
@@ -72,12 +76,11 @@ class RapprochementController extends Controller
                     $montant_paye = str_replace(' ', '', $row['PRIME_ASSU_CORIS']);
                     $datecompt = str_replace(' ', '', $row['DATECOMPTA']);
                     //récupérer le contrat correspondant au numéro de dossier
-                    $contrat = Contrat::where('numdossier',$numdossier)
-                                        ->where('etat','validé')
-                                        ->where('banque_id',$request->banque_id)
-                                        ->first();
-                    if($contrat != null)
-                    {
+                    $contrat = Contrat::where('numdossier', $numdossier)
+                        ->where('etat', 'validé')
+                        ->where('banque_id', $request->banque_id)
+                        ->first();
+                    if ($contrat != null) {
                         if ($contrat->primetotale == $montant_paye) {
                             $contrat->etat = "payé";
                             $contrat->rapprochement_id = $rapprochement->id;
@@ -98,30 +101,30 @@ class RapprochementController extends Controller
 
                 return response()->json([
                     "success" => true,
-                    "rapprochement" =>$rapprochement,
+                    "rapprochement" => $rapprochement,
                 ]);
             }
-            
-        }else{
+
+        } else {
             return response()->json([
                 "success" => true,
-                "message" =>"Erreur importation fichier non joint",
+                "message" => "Erreur importation fichier non joint",
             ]);
         }
-        
+
     }
 
-    public function verifRapprochement(Request $request) 
+    public function verifRapprochement(Request $request)
     {
-        if ($files = $request->file('fichier_rapprochement')){
+        if ($files = $request->file('fichier_rapprochement')) {
 
             $extension_fichier = $request->fichier_rapprochement->getClientOriginalExtension();
-            if(strcmp($extension_fichier,"xlsx") != 0){
+            if (strcmp($extension_fichier, "xlsx") != 0) {
                 return response()->json([
                     "success" => true,
-                    "message" =>"Erreur importation extension du fichier non valide",
+                    "message" => "Erreur importation extension du fichier non valide",
                 ]);
-            }else{
+            } else {
                 $montanttotal_fichier = 0;
                 $montantrapproche = 0;
                 $montant_non_rapproche = 0;
@@ -135,14 +138,13 @@ class RapprochementController extends Controller
                     $numdossier = str_replace(' ', '', $row['DOSSIER']);
                     $montant_paye = str_replace(' ', '', $row['PRIME_ASSU_CORIS']);
                     //récupérer le contrat correspondant au numéro de dossier
-                    $contrat = Contrat::where('numdossier',$numdossier)
-                                        ->where('etat','validé')
-                                        ->where('banque_id',$request->banque_id)
-                                        ->first();
-                    if($contrat != null)
-                    {
+                    $contrat = Contrat::where('numdossier', $numdossier)
+                        ->where('etat', 'validé')
+                        ->where('banque_id', $request->banque_id)
+                        ->first();
+                    if ($contrat != null) {
                         if ($contrat->primetotale == $montant_paye) {
-                           $montantrapproche = $montantrapproche + $montant_paye;
+                            $montantrapproche = $montantrapproche + $montant_paye;
                         }
                     }
                     $montanttotal_fichier = $montanttotal_fichier + $montant_paye;
@@ -151,19 +153,19 @@ class RapprochementController extends Controller
 
                 return response()->json([
                     "success" => true,
-                    "data" =>[
-                        "montant_total_recu" =>$montanttotal_fichier,
-                        "montant_rapproche" =>$montantrapproche,
-                        "montant_non_rapproche" =>$montant_non_rapproche,
+                    "data" => [
+                        "montant_total_recu" => $montanttotal_fichier,
+                        "montant_rapproche" => $montantrapproche,
+                        "montant_non_rapproche" => $montant_non_rapproche,
                     ]
                 ]);
-                
+
             }
-            
-        }else{
+
+        } else {
             return response()->json([
                 "success" => true,
-                "message" =>"Erreur importation fichier non joint",
+                "message" => "Erreur importation fichier non joint",
             ]);
         }
     }
@@ -174,34 +176,62 @@ class RapprochementController extends Controller
     {
         $rapprochement = Rapprochement::find($id);
         $contrat_rapproches = DB::table('contrats')
-                        ->select('contrats.id','contrats.numprojet','contrats.dateeffet','contrats.dateeche','contrats.montantpret','contrats.primetotale','contrats.montantpret',
-                                'contrats.duree_pret','contrats.differe','contrats.etat',
-                                'clients.nom','clients.prenom','clients.numcompte','clients.codeagence','clients.clerib')
-                        ->join('clients', 'clients.id', '=', 'contrats.client_id')
-                        ->where('contrats.rapprochement_id',$id)
-                        ->orderBy('id','desc')
-                        ->get();
+            ->select(
+                'contrats.id',
+                'contrats.numprojet',
+                'contrats.dateeffet',
+                'contrats.dateeche',
+                'contrats.montantpret',
+                'contrats.primetotale',
+                'contrats.montantpret',
+                'contrats.duree_pret',
+                'contrats.differe',
+                'contrats.etat',
+                'clients.nom',
+                'clients.prenom',
+                'clients.numcompte',
+                'clients.codeagence',
+                'clients.clerib'
+            )
+            ->join('clients', 'clients.id', '=', 'contrats.client_id')
+            ->where('contrats.rapprochement_id', $id)
+            ->orderBy('id', 'desc')
+            ->get();
         $contrat_non_rapproches = DB::table('contrats')
-                        ->select('contrats.id','contrats.numprojet','contrats.dateeffet','contrats.dateeche','contrats.montantpret','contrats.primetotale','contrats.montantpret',
-                                'contrats.duree_pret','contrats.differe','contrats.etat',
-                                'clients.nom','clients.prenom','clients.numcompte','clients.codeagence','clients.clerib')
-                        ->join('clients', 'clients.id', '=', 'contrats.client_id')
-                        ->whereBetween(
-                            DB::raw("STR_TO_DATE(contrats.datesaisie, '%d/%m/%Y')"), 
-                            [
-                                DB::raw("STR_TO_DATE('$rapprochement->datedebut', '%d/%m/%Y')"), // Conversion de la première date
-                                DB::raw("STR_TO_DATE('$rapprochement->datefin', '%d/%m/%Y')")
-                            ]
-                        )
-                        ->where('contrats.rapprochement_id',NULL)
-                        ->orderBy('id','desc')
-                        ->get();
+            ->select(
+                'contrats.id',
+                'contrats.numprojet',
+                'contrats.dateeffet',
+                'contrats.dateeche',
+                'contrats.montantpret',
+                'contrats.primetotale',
+                'contrats.montantpret',
+                'contrats.duree_pret',
+                'contrats.differe',
+                'contrats.etat',
+                'clients.nom',
+                'clients.prenom',
+                'clients.numcompte',
+                'clients.codeagence',
+                'clients.clerib'
+            )
+            ->join('clients', 'clients.id', '=', 'contrats.client_id')
+            ->whereBetween(
+                DB::raw("STR_TO_DATE(contrats.datesaisie, '%d/%m/%Y')"),
+                [
+                    DB::raw("STR_TO_DATE('$rapprochement->datedebut', '%d/%m/%Y')"), // Conversion de la première date
+                    DB::raw("STR_TO_DATE('$rapprochement->datefin', '%d/%m/%Y')")
+                ]
+            )
+            ->where('contrats.rapprochement_id', NULL)
+            ->orderBy('id', 'desc')
+            ->get();
         return response()->json([
             "success" => true,
-            "data" =>[
-                        "rapprochement" =>$rapprochement,
-                        "contrat_rapproches" =>$contrat_rapproches,
-                        "contrat_non_rapproches" =>$contrat_non_rapproches,
+            "data" => [
+                "rapprochement" => $rapprochement,
+                "contrat_rapproches" => $contrat_rapproches,
+                "contrat_non_rapproches" => $contrat_non_rapproches,
             ]
         ]);
     }
