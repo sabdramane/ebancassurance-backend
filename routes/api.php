@@ -50,23 +50,16 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 }); */
 
-Route::post('register', [AuthController::class, 'register']);
-
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-
+    Route::post('register', [AuthController::class, 'register']);
     Route::apiResource('users', UserController::class);
     Route::apiResource('agences', AgenceController::class);
     Route::apiResource('banques', BanqueController::class);
-    Route::apiResource('beneficiaires', BeneficiaireController::class);
-    Route::apiResource('caracteristiques', CaracrteristiquesController::class);
-    Route::apiResource('categorieproduits', CategorieProduitController::class);
     Route::apiResource('clients', ClientController::class);
     Route::apiResource('contrats', ContratController::class);
     Route::apiResource('contratquestionnaires', ContratQuestionnaireController::class);
-    Route::apiResource('documentprestations', DocumentPrestationController::class);
-    Route::apiResource('examens', ExamenController::class);
     Route::apiResource('garanties', GarantieController::class);
     Route::apiResource('medecins', MedecinController::class);
     Route::apiResource('prestations', PrestationController::class);
@@ -75,8 +68,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('rapprochements', RapprochementController::class);
     Route::apiResource('simulations', SimulationController::class);
     Route::apiResource('tarifs', TarifController::class);
-    Route::apiResource('trancheages', TrancheAgeController::class);
-    Route::apiResource('typecontrats', TypeContratController::class);
     Route::apiResource('typeprestations', TypePrestationController::class);
     Route::apiResource('villes', VilleController::class);
     Route::apiResource('roles', RoleController::class);

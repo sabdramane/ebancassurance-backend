@@ -54,11 +54,10 @@ services:
         container_name: phpmyadmin
         environment:
             PMA_HOST: db
+            PMA_PORT: 3306
+            MYSQL_ROOT_PASSWORD: root_password
             PMA_USER: ebancassurance_user
             PMA_PASSWORD: ebancassurance
-            PMA_PORT: 3306
-            PMA_ABSOLUTE_URI: http://localhost:8091/
-            MYSQL_ROOT_PASSWORD: root_password
         ports:
             - "8091:80"
         depends_on:

@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://127.0.0.1:9000'],
+    'allowed_origins' => ['http://195.110.35.84:9000', 'http://195.110.35.84:80', 'http://127.0.0.1:9000'],
 
     'allowed_origins_patterns' => [],
 
@@ -29,6 +29,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true, // si tu utilises cookies / tokens basés sur session
 
 ];
